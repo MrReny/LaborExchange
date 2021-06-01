@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>LaborExchange.Server</AssemblyName>
+        <RootNamespace>LaborExchange.Server</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LaborExchange.Commons\LaborExchange.Commons.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MagicOnion" Version="4.0.4" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MagicOnion" Version="4.0.4" />
+      <PackageReference Include="ReactiveUI" Version="13.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Model" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LaborExchange.Commons\LaborExchange.Commons.csproj" />
+    </ItemGroup>
+
+</Project>
