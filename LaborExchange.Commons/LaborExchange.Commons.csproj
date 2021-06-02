@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MagicOnion" Version="4.0.4" />
+      <PackageReference Include="MagicOnion" Version="4.3.1" />
     </ItemGroup>
 
     <ItemGroup>
