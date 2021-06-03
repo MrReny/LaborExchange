@@ -12,10 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Model" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\LaborExchange.Commons\LaborExchange.Commons.csproj" />
     </ItemGroup>
 

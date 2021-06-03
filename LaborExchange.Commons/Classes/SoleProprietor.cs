@@ -1,7 +1,13 @@
-﻿namespace LaborExchange.Commons
+﻿using MessagePack;
+
+namespace LaborExchange.Commons
 {
-    public class SoleProprietor
+    [MessagePackObject]
+    public class SoleProprietor:Employer
     {
-        
+        [Key(3)]
+        public long Itn { get; set; }
+        [Key(4)]
+        public Passport Passport { get; set; }
     }
 }

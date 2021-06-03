@@ -1,7 +1,9 @@
-﻿namespace LaborExchange.Server.Enums
+﻿namespace LaborExchange.Server
 {
     public enum UserType
     {
-        
+        Administrator,
+        Employer,
+        Employee
     }
 }

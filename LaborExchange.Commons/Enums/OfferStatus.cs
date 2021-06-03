@@ -1,4 +1,4 @@
-﻿namespace LaborExchange.Commons.Enums
+﻿namespace LaborExchange.Commons
 {
     public enum OfferStatus
     {

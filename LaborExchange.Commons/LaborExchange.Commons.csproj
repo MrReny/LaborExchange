@@ -8,8 +8,4 @@
       <PackageReference Include="MagicOnion" Version="4.0.4" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Classes" />
-    </ItemGroup>
-
 </Project>

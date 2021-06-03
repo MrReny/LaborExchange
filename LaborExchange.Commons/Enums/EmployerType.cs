@@ -1,7 +1,8 @@
-﻿namespace LaborExchange.Commons.Enums
+﻿namespace LaborExchange.Commons
 {
     public enum EmployerType
     {
-        
+        LegalEntity,
+        SoleProprietor
     }
 }

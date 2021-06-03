@@ -1,19 +1,25 @@
-﻿using Grpc.Core;
+﻿using System.Threading.Tasks;
+using Grpc.Core;
 using Grpc.Net.Client;
 using LaborExchange.Commons;
 using MagicOnion.Client;
 
 namespace LaborExchange.Client.Model
 {
-    public class Client : ILaborExchangeHubReciever
+    public class Connector : ILaborExchangeHubReciever
     {
-        private static Client _instance;
-        public static Client Instance => _instance ??= new Client();
+        private static Connector _instance;
+        public static Connector Instance => _instance ??= new Connector();
 
         private ILaborExchangeHub _client;
-        public Client()
-        {
 
+        public ILaborExchangeHub Client => _client;
+
+        public JobOffer[] Offers { get; set; }
+
+        public Connector()
+        {
+            Connect();
         }
 
         public void Connect()
@@ -25,6 +31,11 @@ namespace LaborExchange.Client.Model
                     MaxReceiveMessageSize = 1024 *1024 *64,
                     MaxSendMessageSize = 1024 *1024 *64
                 }) ,this);
+        }
+
+        public void PushOffers(JobOffer[] offers)
+        {
+            Offers = offers;
         }
     }
 }
