@@ -14,7 +14,7 @@ namespace LaborExchange.Server
 
         public async Task<bool> Login(string login, string password)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public Task<bool> Logout()

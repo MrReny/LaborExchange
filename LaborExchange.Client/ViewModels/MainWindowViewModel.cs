@@ -8,7 +8,6 @@ namespace LaborExchange.Client
 
         public MainWindowViewModel()
         {
-            Connector.Instance.Connect();
             _loginViewModel = new LoginViewModel();
         }
     }

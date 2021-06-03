@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
@@ -9,7 +10,6 @@ namespace LaborExchange.Client.Model
     public class Connector : ILaborExchangeHubReciever
     {
         private static Connector _instance;
-        public static Connector Instance => _instance ??= new Connector();
 
         /// <summary>
         ///
@@ -21,20 +21,12 @@ namespace LaborExchange.Client.Model
         /// </summary>
         private ILaborExchangeHub _client;
 
+        /// <summary>
+        ///
+        /// </summary>
         public ILaborExchangeHub Client => _client;
 
         public JobOffer[] Offers { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public ILaborExchangeHub Client => _client;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public Connector()
-        {
 
         public Connector()
         {
@@ -44,7 +36,7 @@ namespace LaborExchange.Client.Model
         /// <summary>
         ///
         /// </summary>
-        public async void Connect()
+        public async Task Connect()
         {
             try
             {

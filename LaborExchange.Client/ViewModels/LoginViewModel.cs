@@ -1,10 +1,10 @@
-﻿using System.Reactive;
-using ReactiveUI;
-
+﻿using System;
 using System.Reactive;
-using System.Windows.Markup;
-using LaborExchange.Client.Model;
+using System.Security;
+using LaborExchange.Client.Helpers;
 using ReactiveUI;
+using LaborExchange.Client.Model;
+using Prism.Commands;
 
 namespace LaborExchange.Client
 {
@@ -12,19 +12,31 @@ namespace LaborExchange.Client
     {
         public string UserName { get; set; }
 
-        public string Password { get; set; }
+        [RequiredSecureString]
+        public SecureString Password { get; set; }
 
-        public ReactiveCommand<Unit, Unit> LoginCommand { get; set; }
+        public DelegateCommand LoginCommand { get; set; }
 
-        public ReactiveCommand<Unit, Unit> CancelCommand { get; set; }
+        public DelegateCommand CancelCommand { get; set; }
 
         public LoginViewModel()
         {
-            LoginCommand = ReactiveCommand.CreateFromTask<Unit, Unit>(
-                async (a) =>
+            LoginCommand = new DelegateCommand(
+                async () =>
                 {
-                    await Connector.Instance.Client.Login(UserName, Password);
-                    return Unit.Default;
+                    try
+                    {
+                        if (Connector.Instance.Client is null) await Connector.Instance.Connect();
+                        if(await Connector.Instance.Client.Login(UserName, Password.ToUnsecuredString()))
+                        {
+                            //TODO
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+
                 });
         }
 

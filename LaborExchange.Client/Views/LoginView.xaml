@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LaborExchange.Client"
+             xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
              xmlns:mvvm="http://prismlibrary.com/"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
@@ -64,7 +65,7 @@
 
 
             <Label Grid.Row="2" Content="Password"/>
-            <TextBox Grid.Row = "2" Grid.Column = "1" Text="{Binding Password}"/>
+            <PasswordBox helpers:PasswordBoxHelper.SecurePassword ="{Binding Password}" Grid.Row = "2" Grid.Column = "1" />
 
 
             <Button Grid.Row="3" Content="Войти" Command="{Binding LoginCommand}"/>
