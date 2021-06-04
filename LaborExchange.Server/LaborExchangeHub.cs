@@ -10,10 +10,16 @@ namespace LaborExchange.Server
         private IGroup _group;
         private ConcurrentDictionary<string, User> _loginnedUsers;
 
+        private DbConnector _dbConnector => DbConnector.Instance;
 
+        public LaborExchangeHub()
+        {
+
+        }
 
         public async Task<bool> Login(string login, string password)
         {
+            _dbConnector.GetUser(login, password);
             return true;
         }
 

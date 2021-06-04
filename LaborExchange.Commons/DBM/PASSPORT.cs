@@ -1,34 +1,33 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using MessagePack;
 
 namespace LaborExchange.Commons
 {
-    [MessagePackObject]
-    public class Passport
+    [Table("PASSPORT")]
+    public class PASSPORT
     {
-        [IgnoreMember]
+        [Column("ID")]
         public int Id { get; set; }
 
-        [Key(1)]
+        [Column("FIRST_NAME")]
         public string FirstName { get; set; }
 
-        [Key(2)]
+        [Column("SECOND_NAME")]
         public string SecondName { get; set; }
 
-        [Key(3)]
+        [Column("FAMILY_NAME")]
         public string FamilyName { get; set; }
 
-        [Key(4)]
+        [Column("PASSPORT_SERIE")]
         public int PassportSerie { get; set; }
 
-        [Key(5)]
+        [Column("PASSPORT_NUMBER")]
         public int PassportNumber { get; set; }
 
-        [Key(6)]
+        [Column("PASSPORT_DATE_OF_ISSUE")]
         public DateTime PassportDateOfIssue { get; set; }
 
-        [Key(7)]
+        [Column("PASSPORT_PLACE_OF_ISSUE")]
         public string PassportPlaceOfIssue { get; set; }
     }
 }

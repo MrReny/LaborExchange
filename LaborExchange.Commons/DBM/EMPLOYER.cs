@@ -3,19 +3,19 @@ using MessagePack;
 
 namespace LaborExchange.Commons
 {
-    [MessagePackObject]
-    public class Employer
+    [Table("EMPLOYERS")]
+    public class EMPLOYER
     {
-        [Key(0)]
+        [Column("ID")]
         public int Id { get; set; }
 
-        [IgnoreMember]
+        [Column("USER_ID")]
         public int UserId { get; set; }
 
-        [Key(1)]
+        [Column("LEGAL_NAME")]
         public string LegalName { get; set; }
 
-        [Key(2)]
+        [Column("EMPLOYER_TYPE")]
         public EmployerType Type { get; set; }
     }
 }

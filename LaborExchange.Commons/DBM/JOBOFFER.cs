@@ -4,25 +4,25 @@ using MessagePack;
 
 namespace LaborExchange.Commons
 {
-    [MessagePackObject]
-    public class JobOffer
+    [Table("JOB_OFFERS")]
+    public class JOBOFFER
     {
-        [Key(0)]
+        [Column("ID")]
         public int Id { get; set; }
 
-        [Key(1)]
+        [Column("JOB_ID")]
         public int JobId { get; set; }
 
-        [Key(2)]
+        [Column("EMPLOYEE_ID")]
         public int EmployeeId { get; set; }
 
-        [Key(3)]
+        [Column("DATE_OF_OFFER")]
         public DateTime DateOfOffer { get; set; }
 
-        [Key(4)]
+        [Column("STATE")]
         public OfferStatus Status { get; set; }
 
-        [Key(5)]
+        [Column("INITIATOR_TYPE")]
         public OfferInitiator Initiator { get; set; }
     }
 }

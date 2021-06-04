@@ -3,25 +3,25 @@ using MessagePack;
 
 namespace LaborExchange.Commons
 {
-    [MessagePackObject]
-    public class Job
+    [Table("JOB_VACANCIES")]
+    public class JOB
     {
-        [Key(0)]
+        [Column("ID")]
         public int Id { get; set; }
 
-        [Key(1)]
+        [Column("JOB_NAME")]
         public string JobName { get; set; }
 
-        [Key(2)]
+        [Column("DATE_OF_OFFER")]
         public int Payment { get; set; }
 
-        [Key(3)]
+        [Column("EDUCATION")]
         public Education Education { get; set; }
 
-        [Key(4)]
+        [Column("EXPERIENCE")]
         public int Experience { get; set; }
 
-        [Key(5)]
+        [Column("EMPLOYER")]
         public Employer Employer { get; set; }
     }
 }
