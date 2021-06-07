@@ -1,4 +1,4 @@
-﻿namespace LaborExchange.Server
+﻿namespace LaborExchange.Commons
 {
     public class User
     {

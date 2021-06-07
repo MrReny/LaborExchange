@@ -1,5 +1,5 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
-using LaborExchange.Commons;
+using LaborExchange.DataBaseModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace LaborExchange.Server
@@ -14,18 +14,27 @@ namespace LaborExchange.Server
 
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseFirebird(
+                "ServerType=0;User=SYSDBA;Password=masterkey;DataSource=localhost;Database=C:/Programming/DB/LABOREXCHANGE.FDB");
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employee>().HasOne(e=> e.Passport);
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<EMPLOYEE> Employees { get; set; }
 
-        public DbSet<EMPLOYER> Employers { get; set; }
 
-        public DbSet<JOB> Jobs { get; set; }
-
-        public DbSet<JOBOFFER> JobOffers { get; set; }
+        public virtual DbSet<EMPLOYEE> EMPLOYEES { get; set; }
+        public virtual DbSet<EMPLOYER> EMPLOYERS { get; set; }
+        public virtual DbSet<JOB_EMPLOYMENT> JOB_EMPLOYMENTS { get; set; }
+        public virtual DbSet<JOB_OFFER> JOB_OFFERS { get; set; }
+        public virtual DbSet<JOB_VACANCY> JOB_VACANCIES { get; set; }
+        public virtual DbSet<LEGAL_ENTITY> LEGAL_ENTITIES { get; set; }
+        public virtual DbSet<PASSPORT> PASSPORT { get; set; }
+        public virtual DbSet<SOLE_PROPRITEOR> SOLE_PROPRITEORS { get; set; }
+        public virtual DbSet<USER> USERS { get; set; }
     }
 }

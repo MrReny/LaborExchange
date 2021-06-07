@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LaborExchange.Commons\LaborExchange.Commons.csproj" />
+      <ProjectReference Include="..\LaborExchange.DataBaseModel\LaborExchange.DataBaseModel.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -15,10 +16,7 @@
       <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="8.0.1" />
       <PackageReference Include="MagicOnion" Version="4.3.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Services" />
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     </ItemGroup>
 
 </Project>

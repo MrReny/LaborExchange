@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FirebirdSql.Data.FirebirdClient;
 using LaborExchange.Commons;
 using Microsoft.EntityFrameworkCore;
@@ -15,15 +16,27 @@ namespace LaborExchange.Server
         {
             _dbContext = new LaborExchangeDbContext(
                 new DbContextOptionsBuilder<LaborExchangeDbContext>()
-                    .UseFirebird(new FbConnection("ServerType=0;User=SYSDBA;Password=masterkey;DataSource=localhost;Database=C:/Programming/LaborExchange/LABOREXCHANGE.FDB")).Options);
-            var result = _dbContext.Employees.FromSqlRaw("select * from EMPLOYEES");
+                    .UseFirebird(new FbConnection("ServerType=0;User=SYSDBA;Password=masterkey;DataSource=localhost;Database=C:/Programming/DB/LABOREXCHANGE.FDB")).Options);
+        }
 
-            var res = result;
+        public DbConnector Init()
+        {
+            return Instance;
         }
 
         public User GetUser(string login, string password)
         {
-            throw new InvalidOperationException();
+            return _dbContext.USERS.Where(u => u.LOGIN == login && u.PASSWORD == password)
+                .Select(
+                    u =>
+                        new User()
+                        {
+                            Login = u.LOGIN,
+                            Password = u.PASSWORD,
+                            Email = u.EMAIL,
+                            UserId = u.ID,
+                            UserType = (UserType) u.USER_TYPE
+                        }).FirstOrDefault();
         }
 
         public bool AddUser(User user)

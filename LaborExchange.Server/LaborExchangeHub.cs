@@ -14,7 +14,7 @@ namespace LaborExchange.Server
 
         public LaborExchangeHub()
         {
-
+            _dbConnector.Init();
         }
 
         public async Task<bool> Login(string login, string password)
