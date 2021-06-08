@@ -4,4 +4,8 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\LaborExchange.Commons\LaborExchange.Commons.csproj" />
+    </ItemGroup>
+
 </Project>

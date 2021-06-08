@@ -8,19 +8,17 @@ namespace LaborExchange.Commons
     public class Employee
     {
         [Key(0)]
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [IgnoreMember]
         public int? UserId { get; set; }
 
         [Key(1)]
-        public string FirstName => Passport.FamilyName;
+        public string FirstName => Passport.FirstName;
 
-        [Key(2)]
-        public string SecondName { get; set; }
+        [Key(2)] public string SecondName => Passport.SecondName;
 
-        [Key(3)]
-        public string FamilyName { get; set; }
+        [Key(3)] public string FamilyName => Passport.FamilyName;
 
         [Key(4)]
         public Education? Education { get; set; }

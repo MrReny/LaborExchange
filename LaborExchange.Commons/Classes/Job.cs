@@ -13,7 +13,7 @@ namespace LaborExchange.Commons
         public string JobName { get; set; }
 
         [Key(2)]
-        public int Payment { get; set; }
+        public int? Payment { get; set; }
 
         [Key(3)]
         public Education Education { get; set; }
