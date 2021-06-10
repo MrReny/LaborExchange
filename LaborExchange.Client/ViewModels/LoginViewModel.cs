@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Reactive;
 using System.Security;
 using LaborExchange.Client.Helpers;
-using ReactiveUI;
 using LaborExchange.Client.Model;
 using Prism.Commands;
 

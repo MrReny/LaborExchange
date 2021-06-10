@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LaborExchange.Commons;
 
 namespace LaborExchange.DataBaseModel
 {
@@ -23,6 +24,31 @@ namespace LaborExchange.DataBaseModel
 
         public int PASSPORT_ID { get; set; }
         [ForeignKey("PASSPORT_ID")]
-        public PASSPORT PASSPORT { get; set; }
+        public virtual PASSPORT PASSPORT { get; set; }
+
+        public Employee ToTransportType()
+        {
+            return new Employee()
+            {
+                Id = ID,
+                UserId = USER_ID,
+                Education = (Education?)EDUCATION,
+                Experience = EXPERIENCE,
+                Itn = ITN,
+                Passport = PASSPORT?.ToTransportType()
+            };
+        }
+
+        public static EMPLOYEE FromTransportType(Employee e)
+        {
+            return new EMPLOYEE()
+            {
+                EDUCATION = (int?) e.Education,
+                EXPERIENCE = e.Experience,
+                ID = e.Id,
+                ITN = e.Itn,
+                PASSPORT = PASSPORT.FromTransportType(e.Passport)
+            };
+        }
     }
 }

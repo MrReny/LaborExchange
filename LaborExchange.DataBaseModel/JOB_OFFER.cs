@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LaborExchange.Commons;
 
 namespace LaborExchange.DataBaseModel
 {
@@ -23,6 +24,32 @@ namespace LaborExchange.DataBaseModel
         public System.DateTime DATE_OF_OFFER { get; set; }
         public Nullable<int> STATE { get; set; }
         public int INITIATOR_TYPE { get; set; }
+
+        public JobOffer ToTransportType()
+        {
+            return new JobOffer()
+            {
+                Id = ID,
+                JobId = JOB_ID,
+                DateOfOffer = DATE_OF_OFFER,
+                EmployeeId = EMPLOYEE_ID,
+                Initiator = (OfferInitiator)INITIATOR_TYPE,
+                Status = STATE==null? OfferStatus.NotReviewed : (OfferStatus)STATE
+            };
+        }
+
+        public static JOB_OFFER FromTransportType(JobOffer j)
+        {
+            return new JOB_OFFER()
+            {
+                ID = j.Id,
+                JOB_ID = j.JobId,
+                DATE_OF_OFFER = j.DateOfOffer,
+                EMPLOYEE_ID = j.EmployeeId,
+                INITIATOR_TYPE = (int)j.Initiator,
+                STATE = (int)j.Status
+            };
+        }
 
 
 

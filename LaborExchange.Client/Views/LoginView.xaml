@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:LaborExchange.Client"
              xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
              xmlns:mvvm="http://prismlibrary.com/"
-             mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              >
