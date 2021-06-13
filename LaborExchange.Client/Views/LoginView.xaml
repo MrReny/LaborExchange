@@ -3,13 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:LaborExchange.Client"
              xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
-             xmlns:mvvm="http://prismlibrary.com/"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300"
              >
     <UserControl.Resources>
+
         <Style TargetType="{x:Type Control}">
             <Setter Property="Background">
                 <Setter.Value>
@@ -36,9 +34,11 @@
         <Style TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource {x:Type Control}}"
                />
-
+        <Style TargetType="{x:Type PasswordBox}"
+               BasedOn="{StaticResource {x:Type Control}}"/>
     </UserControl.Resources>
-    <Border CornerRadius="15" BorderBrush="Black" BorderThickness="1" Background="Aquamarine">
+
+    <Border CornerRadius="15" BorderBrush="Black" BorderThickness="1"  DataContext="{Binding}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -52,24 +52,37 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="{Binding }"
+            <Label Content="Login"
                    Grid.ColumnSpan="2"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"/>
 
             <Label Content="Login"
                    Grid.Row="1"
+                   Grid.Column="0"
                    />
             <TextBox Grid.Row = "1" Grid.Column = "1" Text="{Binding UserName}"/>
 
 
-            <Label Grid.Row="2" Content="Password"/>
-            <PasswordBox helpers:PasswordBoxHelper.SecurePassword ="{Binding Password}" Grid.Row = "2" Grid.Column = "1" />
+            <Label Content="Password"
+                   Grid.Row="2"
+                   Grid.Column="0"/>
+            <PasswordBox
+                Grid.Row = "2"
+                Grid.Column = "1"
+                helpers:PasswordBoxHelper.SecurePassword ="{Binding Password}"
+            />
 
 
-            <Button Grid.Row="3" Content="Войти" Command="{Binding LoginCommand}"/>
-            <Button Grid.Row = "3" Grid.Column = "1" Content="Отмена" Command="{Binding CancelCommand}"/>
+            <Button Grid.Row="3"
+                    Grid.Column="0"
+                    Content="Войти"
+                    Command="{Binding LoginCommand}"/>
 
+            <Button Grid.Row = "3"
+                    Grid.Column = "1"
+                    Content="Отмена"
+                    Command="{Binding CancelCommand}"/>
         </Grid>
     </Border>
 

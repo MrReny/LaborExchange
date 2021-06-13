@@ -6,7 +6,7 @@ namespace LaborExchange.Commons
 {
     public interface ILaborExchangeHub:IStreamingHub<ILaborExchangeHub, ILaborExchangeHubReciever>
     {
-        Task<bool> Login(string login, string password);
+        Task<User> Login(string login, string password);
 
         Task<bool> Logout();
 

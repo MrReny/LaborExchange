@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LaborExchange.Commons;
@@ -17,6 +17,16 @@ namespace LaborExchange.DataBaseModel
 
         public short EMPLOYER_TYPE { get; set; }
         public string LEGAL_NAME { get; set; }
+
+        public ICollection<JOB_VACANCY> Jobs { get; set; }
+
+        [NotMapped]
+        public LEGAL_ENTITY LegalEntity { get; set; }
+
+        [NotMapped]
+        public SOLE_PROPRITEOR SoleProprietor { get; set; }
+
+        #region Methods
 
         public Employer ToTransportType()
         {
@@ -40,5 +50,8 @@ namespace LaborExchange.DataBaseModel
                 LEGAL_NAME = e.LegalName
             };
         }
+
+        #endregion
+
     }
 }

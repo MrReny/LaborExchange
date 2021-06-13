@@ -1,14 +1,18 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using LaborExchange.Commons;
+using LaborExchange.DataBaseModel;
 using MagicOnion.Server.Hubs;
 
 namespace LaborExchange.Server
 {
+    [GroupConfiguration(typeof(ConcurrentDictionaryGroupRepositoryFactory))]
     public class LaborExchangeHub: StreamingHubBase<ILaborExchangeHub, ILaborExchangeHubReciever>, ILaborExchangeHub
     {
         private IGroup _group;
-        private ConcurrentDictionary<string, User> _loginnedUsers;
+        private IInMemoryStorage<User> _users => _group.GetInMemoryStorage<User>();
+        private readonly ConcurrentDictionary<Guid, User> _loginnedUsers = new ConcurrentDictionary<Guid, User>();
 
         private DbConnector _dbConnector => DbConnector.Instance;
 
@@ -17,25 +21,44 @@ namespace LaborExchange.Server
             _dbConnector.Init();
         }
 
-        public async Task<bool> Login(string login, string password)
+        public async Task<User> Login(string login, string password)
         {
-            _dbConnector.GetUser(login, password);
-            return true;
+            //TODO Разобраться с группами и тд
+            var user = _dbConnector.GetUser(login, password);
+
+            if (user == null) return null;
+
+            _group = await Group.AddAsync(ConnectionId.ToString());
+            _loginnedUsers.TryAdd(ConnectionId, user);
+            _group.GetInMemoryStorage<User>().Set(ConnectionId, user);
+            return user;
+
         }
 
-        public Task<bool> Logout()
+
+        public async Task<bool> Logout()
         {
-            throw new System.NotImplementedException();
+            var asd = _group.GetInMemoryStorage<User>();
+            var user = _users?.Get(ConnectionId);
+            if (user == null) return false;
+            _users.Remove(ConnectionId);
+            return true;
         }
 
         public async Task<Employee[]> GetEmployees()
         {
-            throw new System.NotImplementedException();
+            var user = _users?.Get(ConnectionId);
+            if (user is not {UserType: UserType.Employer}) return new Employee[0];
+
+            return _dbConnector.GetEmployees();
         }
 
         public async Task<Job[]> GetJobs()
         {
-            throw new System.NotImplementedException();
+            var user = _users?.Get(ConnectionId);
+            if (user == null) return new Job[0];
+
+            return  _dbConnector.GetJobs();
         }
 
         public async Task<bool> MakeOffer(Job job, Employee employee)

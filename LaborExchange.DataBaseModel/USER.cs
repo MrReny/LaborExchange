@@ -12,5 +12,9 @@ namespace LaborExchange.DataBaseModel
         public string PASSWORD { get; set; }
         public string EMAIL { get; set; }
         public int USER_TYPE { get; set; }
+
+        public EMPLOYEE Employee { get; set; }
+
+        public EMPLOYER Employer { get; set; }
     }
 }

@@ -1,12 +1,17 @@
-﻿<UserControl x:Class="LaborExchange.Client.MainView"
+﻿<UserControl x:Class="LaborExchange.Client.EmployeesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LaborExchange.Client"
+             xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <TabControl>
+    <StackPanel>
 
-    </TabControl>
+        <DataGrid ItemsSource="{Binding Employees}"
+                  helpers:DataGridGenerateColumnBehavior.UseBrowsableAttributeOnColumn="True"/>
+
+        <Button Content="update" Command="{Binding UpdateEmployeesCollectionCommand}"/>
+    </StackPanel>
 </UserControl>

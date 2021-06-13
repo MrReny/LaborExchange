@@ -9,6 +9,7 @@ namespace LaborExchange.Client
     {
         public MainWindow()
         {
+            DataContext = new MainWindowViewModel();
             InitializeComponent();
         }
     }

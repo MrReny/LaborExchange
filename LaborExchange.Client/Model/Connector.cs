@@ -5,7 +5,7 @@ using Grpc.Net.Client;
 using LaborExchange.Commons;
 using MagicOnion.Client;
 
-namespace LaborExchange.Client.Model
+namespace LaborExchange.Client
 {
     public class Connector : ILaborExchangeHubReciever
     {
@@ -19,12 +19,12 @@ namespace LaborExchange.Client.Model
         /// <summary>
         ///
         /// </summary>
-        private ILaborExchangeHub _client;
+        public ILaborExchangeHub Client { get; private set; }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public ILaborExchangeHub Client => _client;
+        public async Task<ILaborExchangeHub> GetClient()
+        {
+            return Client ?? await Connect();
+        }
 
         public JobOffer[] Offers { get; set; }
 
@@ -36,11 +36,11 @@ namespace LaborExchange.Client.Model
         /// <summary>
         ///
         /// </summary>
-        public async Task Connect()
+        public async Task<ILaborExchangeHub> Connect()
         {
             try
             {
-                _client = await StreamingHubClient.ConnectAsync<ILaborExchangeHub, ILaborExchangeHubReciever>(
+               return Client = await StreamingHubClient.ConnectAsync<ILaborExchangeHub, ILaborExchangeHubReciever>(
                     GrpcChannel.ForAddress("http://localhost:5000", new GrpcChannelOptions()
                     {
                         Credentials = ChannelCredentials.Insecure,
@@ -51,7 +51,7 @@ namespace LaborExchange.Client.Model
             catch (Exception e)
             {
                 var channel = GrpcChannel.ForAddress("https://localhost:5000");
-                _client = await StreamingHubClient.ConnectAsync<ILaborExchangeHub, ILaborExchangeHubReciever>(
+                return Client = await StreamingHubClient.ConnectAsync<ILaborExchangeHub, ILaborExchangeHubReciever>(
                    channel,this);
             }
 

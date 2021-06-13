@@ -3,7 +3,7 @@
     public enum UserType
     {
         Administrator,
-        Employer,
-        Employee
+        Employee,
+        Employer
     }
 }

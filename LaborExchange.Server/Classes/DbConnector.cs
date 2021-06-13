@@ -5,11 +5,17 @@ using FirebirdSql.Data.FirebirdClient;
 using LaborExchange.Commons;
 using LaborExchange.DataBaseModel;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace LaborExchange.Server
 {
     public class DbConnector
     {
+        /// <summary>
+        ///  Логгер.
+        /// </summary>
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         //TODO НОЛЬ БЕЗОПАСНОСТИ
         private LaborExchangeDbContext _dbContext;
         private static DbConnector _instance;
@@ -32,7 +38,12 @@ namespace LaborExchange.Server
 
         public User GetUser(string login, string password)
         {
-            return _dbContext.USERS.Where(u => u.LOGIN == login && u.PASSWORD == password)
+            return _dbContext.USERS
+                .Include(u => u.Employee)
+                .ThenInclude(e=>e.PASSPORT)
+                .Include(u => u.Employer)
+                .ThenInclude(e=> e.Jobs)
+                .Where(u => u.LOGIN == login && u.PASSWORD == password)
                 .Select(
                     u =>
                         new User()
@@ -71,10 +82,14 @@ namespace LaborExchange.Server
         {
             try
             {
-                return _dbContext.EMPLOYEES.Select(e => e.ToTransportType()).ToArray();
+                return _dbContext.EMPLOYEES
+                    .Include(e=> e.PASSPORT)
+                    .Select(e => e.ToTransportType())
+                    .ToArray();
             }
             catch (Exception e)
             {
+                _logger.Error(e);
                 return Array.Empty<Employee>();
             }
 
@@ -86,8 +101,9 @@ namespace LaborExchange.Server
             {
                 _dbContext.EMPLOYEES.Add(EMPLOYEE.FromTransportType(employee));
             }
-            catch
+            catch(Exception e)
             {
+                _logger.Error(e);
                 //TODO Logging
             }
         }
@@ -101,6 +117,7 @@ namespace LaborExchange.Server
             }
             catch (Exception e)
             {
+                _logger.Error(e);
             }
         }
 
@@ -109,13 +126,15 @@ namespace LaborExchange.Server
             try
             {
                 return _dbContext.JOB_VACANCIES
+                    .Include(v=> v.EMPLOYER.LegalEntity)
+                    .Include(v=>v.EMPLOYER.SoleProprietor)
                     .Where(e=> e.SATISFIED == 0)
                     .Select(e => e.ToTransportType())
                     .ToArray();
             }
             catch (Exception e)
             {
-                //TODO
+                _logger.Error(e);
                 return Array.Empty<Job>();
             }
         }
@@ -128,7 +147,7 @@ namespace LaborExchange.Server
             }
             catch (Exception e)
             {
-                //TODO
+                _logger.Error(e);
             }
         }
 
@@ -153,7 +172,7 @@ namespace LaborExchange.Server
             }
             catch (Exception e)
             {
-                //TODO
+                _logger.Error(e);
                 return Array.Empty<JobOffer>();
             }
         }
@@ -167,7 +186,7 @@ namespace LaborExchange.Server
             }
             catch (Exception e)
             {
-                //TODO
+                _logger.Error(e);
                 return false;
             }
         }
@@ -181,9 +200,9 @@ namespace LaborExchange.Server
                 _dbContext.JOB_OFFERS.Update(JOB_OFFER.FromTransportType(offer));
                 return true;
             }
-            catch
+            catch(Exception e)
             {
-                //TODO
+                _logger.Error(e);
                 return false;
             }
         }
