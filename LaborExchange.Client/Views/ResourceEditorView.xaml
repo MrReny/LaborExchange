@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
+             xmlns:themes="clr-namespace:LaborExchange.Client.Themes"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -36,6 +37,9 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Grid.Column="1">
+            <ComboBox SelectedValue="{Binding ValueType}"
+                      ItemsSource="{Binding Source={helpers:EnumToItemsSource {x:Type themes:ThemeTypes}}}"/>
+            <Button Content="SetStyle" Command="{Binding  Path =SetStyle}"/>
             <Label Content="{Binding SelectedProperty.Key}"/>
 
             <xctk:ColorPicker

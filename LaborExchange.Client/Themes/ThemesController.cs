@@ -3,15 +3,17 @@ using System.Windows;
 
 namespace LaborExchange.Client.Themes
 {
+    public enum ThemeTypes
+    {
+        Light,
+        ColourfulLight,
+        Dark,
+        ColourfulDark
+    }
+
     public static class ThemesController
     {
-        public enum ThemeTypes
-        {
-            Light,
-            ColourfulLight,
-            Dark,
-            ColourfulDark
-        }
+
 
         public static ThemeTypes CurrentTheme { get; set; }
 

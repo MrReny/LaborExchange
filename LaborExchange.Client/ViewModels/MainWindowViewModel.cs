@@ -58,6 +58,8 @@ namespace LaborExchange.Client
 
             JobsViewModel = new JobsViewModel();
 
+            EmployeesViewModel = new EmployeesViewModel();
+
             ViewModels.Add(JobsViewModel);
 
             CurrentViewModel = LoginViewModel;
@@ -66,6 +68,7 @@ namespace LaborExchange.Client
 
         public void SwitchToView(ViewModelBase view)
         {
+            if (CurrentViewModel == LoginViewModel || CurrentViewModel == view) CurrentViewModel = JobsViewModel;
             CurrentViewModel = view;
         }
 

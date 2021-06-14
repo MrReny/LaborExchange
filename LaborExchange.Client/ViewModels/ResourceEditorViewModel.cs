@@ -49,9 +49,13 @@ namespace LaborExchange.Client
 
         public DelegateCommand SetColor { get; set; }
 
+        public DelegateCommand SetStyle { get; set; }
+
+        public ThemeTypes ValueType { get; set; }
+
         public ResourceEditorViewModel()
         {
-            Style = ThemesController.GetTheme(ThemesController.ThemeTypes.ColourfulDark);
+            Style = ThemesController.GetTheme(ThemeTypes.ColourfulDark);
 
             var lst = new List<DictionaryEntry>();
             foreach (var dictEntry in Style)
@@ -71,7 +75,23 @@ namespace LaborExchange.Client
                         var index = Properties.IndexOf(_selectedProperty);
                         _selectedProperty.Value = _selectedColor;
                         Properties[index] = _selectedProperty;
-                        SetStyle();
+                        ApplyStyle();
+
+                    }
+                    catch(Exception e)
+                    {
+                        _logger.Error(e);
+                    }
+
+                });
+
+            SetStyle = new DelegateCommand(
+                () =>
+                {
+                    try
+                    {
+
+                        ApplyStandardStyle();
 
                     }
                     catch(Exception e)
@@ -82,7 +102,12 @@ namespace LaborExchange.Client
                 });
         }
 
-        private void SetStyle()
+        private void ApplyStandardStyle()
+        {
+            ThemesController.SetTheme(ValueType);
+        }
+
+        private void ApplyStyle()
         {
             foreach (var de in Properties)
             {
