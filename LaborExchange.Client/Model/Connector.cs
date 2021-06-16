@@ -4,11 +4,17 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using LaborExchange.Commons;
 using MagicOnion.Client;
+using NLog;
 
 namespace LaborExchange.Client
 {
     public class Connector : ILaborExchangeHubReciever
     {
+        /// <summary>
+        ///  Логгер.
+        /// </summary>
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         private static Connector _instance;
 
         /// <summary>
@@ -50,6 +56,7 @@ namespace LaborExchange.Client
             }
             catch (Exception e)
             {
+                _logger.Error(e);
                 var channel = GrpcChannel.ForAddress("https://localhost:5000");
                 return Client = await StreamingHubClient.ConnectAsync<ILaborExchangeHub, ILaborExchangeHubReciever>(
                    channel,this);

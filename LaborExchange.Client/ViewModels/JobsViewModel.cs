@@ -2,11 +2,17 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using LaborExchange.Commons;
+using NLog;
 
 namespace LaborExchange.Client
 {
     public class JobsViewModel:ViewModelBase
     {
+        /// <summary>
+        ///  Логгер.
+        /// </summary>
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         private ObservableCollection<Job> _jobs;
 
         public ObservableCollection<Job> Jobs
@@ -20,9 +26,24 @@ namespace LaborExchange.Client
             }
         }
 
+        private Job _selectedJob;
+
+        public Job SelectedJob
+        {
+            get => _selectedJob;
+            set
+            {
+                if(_selectedJob == value) return;
+                _selectedJob = value;
+                OnPropertyChanged();
+            }
+        }
+
         #region Commands
 
-        public DelegateCommand UpdateJobsCollectionCommand { get; set; }
+        public DelegateCommand UpdateJobsCollectionCommand => new DelegateCommand(async () => await PullJobs());
+
+        public DelegateCommand MakeOfferCommand => new DelegateCommand(async () => await PullJobs());
 
         #endregion
 
@@ -30,8 +51,6 @@ namespace LaborExchange.Client
         {
             Name = "Вакансии";
             Task.Run(PullJobs);
-
-            UpdateJobsCollectionCommand = new DelegateCommand(async () => await PullJobs());
         }
 
         public async Task PullJobs()
@@ -43,7 +62,35 @@ namespace LaborExchange.Client
             }
             catch (Exception e)
             {
+                _logger.Error(e);
+            }
 
+        }
+
+        public async Task MakeOffer()
+        {
+            try
+            {
+                var a = await Connector.Instance.GetClient();
+                var offer = new JobOffer()
+                {
+                    DateOfOffer = DateTime.Now,
+                    JobId = SelectedJob.Id
+                };
+                var result = await a.MakeOffer(offer);
+                if (result)
+                {
+                    //TODO
+                }
+                else
+                {
+                    //TODO
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                //TODO
             }
 
         }

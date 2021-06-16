@@ -17,18 +17,18 @@ namespace LaborExchange.Server
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         //TODO НОЛЬ БЕЗОПАСНОСТИ
-        private LaborExchangeDbContext _dbContext;
+        private LaborExchangeDbContext _dbContext=> new LaborExchangeDbContext(
+            new DbContextOptionsBuilder<LaborExchangeDbContext>()
+                .UseFirebird(new FbConnection("ServerType=0;User=SYSDBA;" +
+                                              "Password=masterkey;" +
+                                              "DataSource=localhost;" +
+                                              "Database=C:/Programming/DB/LABOREXCHANGE.FDB")).Options);
         private static DbConnector _instance;
         public static DbConnector Instance => _instance ??= new DbConnector();
 
         public DbConnector()
         {
-            _dbContext = new LaborExchangeDbContext(
-                new DbContextOptionsBuilder<LaborExchangeDbContext>()
-                    .UseFirebird(new FbConnection("ServerType=0;User=SYSDBA;" +
-                        "Password=masterkey;" +
-                        "DataSource=localhost;" +
-                        "Database=C:/Programming/DB/LABOREXCHANGE.FDB")).Options);
+
         }
 
         public DbConnector Init()
@@ -40,29 +40,29 @@ namespace LaborExchange.Server
         {
             try
             {
-                return _dbContext.USERS
-                                .Include(u => u.Employee)
-                                .ThenInclude(e=>e.PASSPORT)
-                                .Include(u => u.Employer)
-                                .ThenInclude(e=> e.Jobs)
-                                .Where(u => u.LOGIN == login && u.PASSWORD == password)
-                                .Select(
-                                    u =>
-                                        new User()
-                                        {
-                                            Login = u.LOGIN,
-                                            Password = u.PASSWORD,
-                                            Email = u.EMAIL,
-                                            UserId = u.ID,
-                                            UserType = (UserType) u.USER_TYPE
-                                        }).FirstOrDefault();
+                using (_dbContext)
+                    return _dbContext.USERS
+                        .Include(u => u.Employee)
+                        .ThenInclude(e => e.PASSPORT)
+                        .Include(u => u.Employer)
+                        .ThenInclude(e => e.Jobs)
+                        .Where(u => u.LOGIN == login && u.PASSWORD == password)
+                        .Select(
+                            u =>
+                                new User()
+                                {
+                                    Login = u.LOGIN,
+                                    Password = u.PASSWORD,
+                                    Email = u.EMAIL,
+                                    UserId = u.ID,
+                                    UserType = (UserType) u.USER_TYPE
+                                }).FirstOrDefault();
             }
             catch (Exception e)
             {
                 _logger.Error(e);
                 return null;
             }
-
         }
 
         public bool AddUser(User user)
@@ -70,47 +70,50 @@ namespace LaborExchange.Server
             //TODO Password is insecure
             try
             {
-                var u = _dbContext.USERS.Add(new USER()
+                using (_dbContext)
                 {
-                    EMAIL = user.Email,
-                    ID = user.UserId,
-                    LOGIN = user.Login,
-                    PASSWORD = user.Password
-                });
+                    var u = _dbContext.USERS.Add(new USER()
+                    {
+                        EMAIL = user.Email,
+                        ID = user.UserId,
+                        LOGIN = user.Login,
+                        PASSWORD = user.Password
+                    });
+                }
+
                 return true;
             }
             catch
             {
                 return false;
             }
-
-
         }
 
         public Employee[] GetEmployees()
         {
             try
             {
-                return _dbContext.EMPLOYEES
-                    .Include(e=> e.PASSPORT)
-                    .Select(e => e.ToTransportType())
-                    .ToArray();
+                using (_dbContext)
+                    return _dbContext.EMPLOYEES
+                        .Include(e => e.PASSPORT)
+                        .Select(e => e.ToTransportType())
+                        .ToArray();
             }
             catch (Exception e)
             {
                 _logger.Error(e);
                 return Array.Empty<Employee>();
             }
-
         }
 
         public void AddEmployee(Employee employee)
         {
             try
             {
-                _dbContext.EMPLOYEES.Add(EMPLOYEE.FromTransportType(employee));
+                using (_dbContext)
+                    _dbContext.EMPLOYEES.Add(EMPLOYEE.FromTransportType(employee));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.Error(e);
                 //TODO Logging
@@ -122,7 +125,8 @@ namespace LaborExchange.Server
             try
             {
                 var e = EMPLOYER.FromTransportType(employer);
-                _dbContext.EMPLOYERS.Add(e);
+                using (_dbContext)
+                    _dbContext.EMPLOYERS.Add(e);
             }
             catch (Exception e)
             {
@@ -134,12 +138,12 @@ namespace LaborExchange.Server
         {
             try
             {
-                return _dbContext.JOB_VACANCIES
-                    .Include(v=> v.EMPLOYER.LegalEntity)
-                    .Include(v=>v.EMPLOYER.SoleProprietor)
-                    .Where(e=> e.SATISFIED == 0)
-                    .Select(e => e.ToTransportType())
-                    .ToArray();
+                using (_dbContext)
+                    return _dbContext.JOB_VACANCIES
+                        .Include(j => j.EMPLOYER)
+                        .Where(j => j.SATISFIED == 0)
+                        .Select(j => j.ToTransportType())
+                        .ToArray();
             }
             catch (Exception e)
             {
@@ -152,7 +156,8 @@ namespace LaborExchange.Server
         {
             try
             {
-                _dbContext.Add(JOB_VACANCY.FromTransportType(job));
+                using (_dbContext)
+                    _dbContext.Add(JOB_VACANCY.FromTransportType(job));
             }
             catch (Exception e)
             {
@@ -164,20 +169,24 @@ namespace LaborExchange.Server
         {
             try
             {
-                if(employeeId!= 0)
+                using (_dbContext)
+                {
+                    if (employeeId != 0)
+                        return _dbContext.JOB_OFFERS
+                            .Where((j) => j.EMPLOYEE_ID == employeeId)
+                            .Select(j => j.ToTransportType())
+                            .ToArray();
+                    if (jobId != 0)
+                        return _dbContext.JOB_OFFERS
+                            .Where((j) => j.JOB_ID == jobId)
+                            .Select(j => j.ToTransportType())
+                            .ToArray();
+
                     return _dbContext.JOB_OFFERS
-                        .Where((j)=>j.EMPLOYEE_ID == employeeId)
                         .Select(j => j.ToTransportType())
                         .ToArray();
-                if (jobId != 0)
-                    return _dbContext.JOB_OFFERS
-                        .Where((j)=>j.JOB_ID == jobId)
-                        .Select(j => j.ToTransportType())
-                        .ToArray();
-                else
-                    return _dbContext.JOB_OFFERS
-                        .Select(j => j.ToTransportType())
-                        .ToArray();
+                }
+
             }
             catch (Exception e)
             {
@@ -190,7 +199,13 @@ namespace LaborExchange.Server
         {
             try
             {
-                _dbContext.JOB_OFFERS.Add(JOB_OFFER.FromTransportType(offer));
+                using (_dbContext)
+                {
+                    var id = _dbContext.JOB_OFFERS.Last().ID + 1;
+                    offer.Id = id;
+                    _dbContext.JOB_OFFERS.Add(JOB_OFFER.FromTransportType(offer));
+                }
+
                 return true;
             }
             catch (Exception e)
@@ -201,15 +216,17 @@ namespace LaborExchange.Server
         }
 
 
-
         public bool FinishOffer(JobOffer offer)
         {
             try
             {
-                _dbContext.JOB_OFFERS.Update(JOB_OFFER.FromTransportType(offer));
+                using (_dbContext)
+                {
+                    _dbContext.JOB_OFFERS.Update(JOB_OFFER.FromTransportType(offer));
+                }
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.Error(e);
                 return false;

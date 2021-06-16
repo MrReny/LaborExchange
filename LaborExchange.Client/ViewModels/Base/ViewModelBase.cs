@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using LaborExchange.Client.Annotations;
+using LaborExchange.Commons;
 
 namespace LaborExchange.Client
 {

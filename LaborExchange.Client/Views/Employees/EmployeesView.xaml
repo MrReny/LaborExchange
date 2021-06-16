@@ -4,14 +4,44 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
+             xmlns:local="clr-namespace:LaborExchange.Client"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
+    <UserControl.Resources>
+        <helpers:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+    </UserControl.Resources>
+    <Border Padding="3" Margin="3">
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <DataGrid ItemsSource="{Binding Employees}"
+                      SelectedItem="{Binding SelectedEmployee}"
+                      helpers:DataGridGenerateColumnBehavior.UseBrowsableAttributeOnColumn="True"
+                      helpers:DataGridGenerateColumnBehavior.StretchLastColumn="True"
+                      Visibility="{Binding Employees
+                  ,Converter={StaticResource ObjectToVisibilityConverter}
+                  ,ConverterParameter=Inverse}"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch"
+                      />
 
-        <DataGrid ItemsSource="{Binding Employees}"
-                  helpers:DataGridGenerateColumnBehavior.UseBrowsableAttributeOnColumn="True"/>
+            <local:EmployeeView Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+                                DataContext="{Binding SelectedEmployee}"
 
-        <Button Content="update" Command="{Binding UpdateEmployeesCollectionCommand}"/>
+                                Visibility="{Binding .
+                                ,Converter={StaticResource ObjectToVisibilityConverter}
+                                ,ConverterParameter=Inverse}"/>
 
-    </StackPanel>
+            <Button Grid.Row="1" Grid.Column="0"
+                    Content="Обновить список"
+                    Command="{Binding UpdateEmployeesCollectionCommand}" />
+        </Grid>
+    </Border>
+
 </UserControl>

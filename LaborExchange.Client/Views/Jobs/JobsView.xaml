@@ -7,10 +7,42 @@
              xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <DataGrid ItemsSource="{Binding Jobs}"
-                  helpers:DataGridGenerateColumnBehavior.UseBrowsableAttributeOnColumn="True"/>
+    <UserControl.Resources>
+        <helpers:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+    </UserControl.Resources>
+    <Border Padding="3" Margin="3">
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <DataGrid ItemsSource="{Binding Jobs}"
+                      SelectedItem="{Binding SelectedJob}"
+                      helpers:DataGridGenerateColumnBehavior.UseBrowsableAttributeOnColumn="True"
+                      helpers:DataGridGenerateColumnBehavior.StretchLastColumn="True"
 
-        <Button Content="update" Command="{Binding UpdateJobsCollectionCommand}"/>
-    </StackPanel>
+                      Visibility="{Binding Jobs
+                      ,Converter={StaticResource ObjectToVisibilityConverter}
+                      ,ConverterParameter=Inverse}"
+
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch"
+                      ColumnWidth="Auto"/>
+
+
+
+            <local:JobView Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+                                DataContext="{Binding SelectedJob}"
+                                Visibility="{Binding .
+                                ,Converter={StaticResource ObjectToVisibilityConverter}
+                                ,ConverterParameter=Inverse}"/>
+
+            <Button Grid.Row="1" Grid.Column="0" Content="Обновить список"
+                    Command="{Binding UpdateJobsCollectionCommand}"/>
+        </Grid>
+    </Border>
 </UserControl>

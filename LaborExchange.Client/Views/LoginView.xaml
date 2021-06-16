@@ -38,52 +38,60 @@
                BasedOn="{StaticResource {x:Type Control}}"/>
     </UserControl.Resources>
 
-    <Border CornerRadius="15" BorderBrush="Black" BorderThickness="1"  DataContext="{Binding}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Height="350" Width="600">
+            <Border  VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="15" BorderBrush="{DynamicResource ControlSelectedBorderBrush}" BorderThickness="1"  DataContext="{Binding}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-            <Label Content="Login"
-                   Grid.ColumnSpan="2"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-            <Label Content="Login"
-                   Grid.Row="1"
-                   Grid.Column="0"
-                   />
-            <TextBox Grid.Row = "1" Grid.Column = "1" Text="{Binding UserName}"/>
+                    <Label Content="Авторизация"
+                           Grid.ColumnSpan="2"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
 
-
-            <Label Content="Password"
-                   Grid.Row="2"
-                   Grid.Column="0"/>
-            <PasswordBox
-                Grid.Row = "2"
-                Grid.Column = "1"
-                helpers:PasswordBoxHelper.SecurePassword ="{Binding Password}"
-            />
+                    <Label Content="Имя пользователя"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                    />
+                    <TextBox Grid.Row = "1" Grid.Column = "1" Text="{Binding UserName}"/>
 
 
-            <Button Grid.Row="3"
-                    Grid.Column="0"
-                    Content="Войти"
-                    Command="{Binding LoginCommand}"/>
+                    <Label Content="Пароль"
+                           Grid.Row="2"
+                           Grid.Column="0"/>
+                    <PasswordBox
+                        Grid.Row = "2"
+                        Grid.Column = "1"
+                        helpers:PasswordBoxHelper.SecurePassword ="{Binding Password}"
+                    />
 
-            <Button Grid.Row = "3"
-                    Grid.Column = "1"
-                    Content="Отмена"
-                    Command="{Binding CancelCommand}"/>
-        </Grid>
-    </Border>
+
+                    <Button Grid.Row="3"
+                            Grid.Column="0"
+                            Content="Войти"
+                            Command="{Binding LoginCommand}"/>
+
+                    <Button Grid.Row = "3"
+                            Grid.Column = "1"
+                            Content="Отмена"
+                            Command="{Binding CancelCommand}"/>
+                </Grid>
+            </Border>
+        </StackPanel>
+
+    </Grid>
+
+
 
 </UserControl>

@@ -19,6 +19,7 @@ namespace LaborExchange.Client
 
         private ObservableCollection<Employee> _employees;
 
+
         public ObservableCollection<Employee> Employees
         {
             get => _employees;
@@ -26,6 +27,19 @@ namespace LaborExchange.Client
             {
                 if(_employees == value) return;
                 _employees = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Employee _selectedEmployee;
+
+        public Employee SelectedEmployee
+        {
+            get => _selectedEmployee;
+            set
+            {
+                if(_selectedEmployee == value) return;
+                _selectedEmployee = value;
                 OnPropertyChanged();
             }
         }
@@ -42,6 +56,7 @@ namespace LaborExchange.Client
 
         public EmployeesViewModel()
         {
+
             Name = "Соискатели";
             Task.Run(GetEmployees);
 
@@ -51,11 +66,6 @@ namespace LaborExchange.Client
                     await GetEmployees();
 
                 });
-        }
-
-        public EmployeesViewModel(IEnumerable<Employee> employees):this()
-        {
-            Employees = new ObservableCollection<Employee>(employees);
         }
 
         #endregion

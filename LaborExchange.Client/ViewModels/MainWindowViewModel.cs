@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Windows;
 using LaborExchange.Commons;
 using NLog;
 
@@ -13,7 +14,22 @@ namespace LaborExchange.Client
         /// </summary>
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private User CurrentUser { get; set; }
+        private ViewModelBase _currentViewModel;
+
+        private User _currentUser;
+
+        public User CurrentUser
+        {
+            get => _currentUser;
+            set
+            {
+                if(_currentUser == value) return;
+
+                _currentUser = value;
+                OnPropertyChanged();
+                OnPropertyChanged($"IsEmployeesTabVisible");
+            }
+        }
 
         public LoginViewModel LoginViewModel { get; set; }
 
@@ -22,8 +38,6 @@ namespace LaborExchange.Client
         public JobsViewModel JobsViewModel { get; set; }
 
         public ResourceEditorViewModel StyleEditViewModel { get; set; }
-
-        private ViewModelBase _currentViewModel;
 
         public ViewModelBase CurrentViewModel
         {
@@ -37,11 +51,31 @@ namespace LaborExchange.Client
             }
         }
 
+        public Visibility IsEmployeesTabVisible =>
+            CurrentUser?.UserType == UserType.Employer ? Visibility.Visible : Visibility.Collapsed;
+
         #endregion
 
         #region Commands
 
         public DelegateCommand<ViewModelBase> ChangeViewCommand => new(SwitchToView);
+
+        public DelegateCommand LogOutCommand => new DelegateCommand(() =>
+        {
+            try
+            {
+                Connector.Instance.Client.Logout();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+            }
+            finally
+            {
+                CurrentUser = null;
+            }
+
+        });
 
         #endregion
 
@@ -61,7 +95,7 @@ namespace LaborExchange.Client
 
         public void SwitchToView(ViewModelBase view)
         {
-            if (CurrentViewModel == LoginViewModel && CurrentViewModel == view) CurrentViewModel = JobsViewModel;
+            if (CurrentViewModel == LoginViewModel && this == view) CurrentViewModel = JobsViewModel;
             CurrentViewModel = view;
         }
 

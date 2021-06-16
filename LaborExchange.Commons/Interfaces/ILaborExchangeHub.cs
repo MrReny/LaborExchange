@@ -14,7 +14,7 @@ namespace LaborExchange.Commons
 
         Task<Job[]> GetJobs();
 
-        Task<bool> MakeOffer(Job job, Employee employee);
+        Task<bool> MakeOffer(JobOffer offer);
 
         Task<bool> ReturnOffer(JobOffer offer);
 

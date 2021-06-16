@@ -8,4 +8,8 @@
       <PackageReference Include="MagicOnion" Version="4.3.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Assets\user_face_icon_24px.png" />
+    </ItemGroup>
+
 </Project>

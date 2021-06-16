@@ -2,9 +2,9 @@
 
 namespace LaborExchange.Client
 {
-    public partial class ResourceEditorView : UserControl
+    public partial class JobView : UserControl
     {
-        public ResourceEditorView()
+        public JobView()
         {
             InitializeComponent();
         }

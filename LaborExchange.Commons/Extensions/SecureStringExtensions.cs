@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace LaborExchange.Client
+namespace LaborExchange.Commons
 {
     /// <summary>
     /// Provides unsafe temporary operations on secured strings.

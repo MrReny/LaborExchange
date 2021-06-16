@@ -55,15 +55,25 @@ namespace LaborExchange.Server
 
         public async Task<Job[]> GetJobs()
         {
-            var user = _users?.Get(ConnectionId);
-            if (user == null) return new Job[0];
-
             return _dbConnector.GetJobs();
         }
 
-        public async Task<bool> MakeOffer(Job job, Employee employee)
+        public async Task<bool> MakeOffer(JobOffer offer)
         {
-            throw new System.NotImplementedException();
+            var user = _users?.Get(ConnectionId);
+            if (user == null) return false;
+            else if(user.UserType == UserType.Employer)
+            {
+                offer.Initiator = OfferInitiator.Employer;
+
+            }
+            else if(user.UserType == UserType.Employee)
+            {
+                offer.Initiator = OfferInitiator.Employee;
+                offer.EmployeeId = user.UserId;
+            }
+
+            return _dbConnector.AddOffer(offer);
         }
 
         public Task<bool> ReturnOffer(JobOffer offer)

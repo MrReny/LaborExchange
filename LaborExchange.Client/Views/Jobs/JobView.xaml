@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="LaborExchange.Client.JobView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:LaborExchange.Client"
+             xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers">
+    <UserControl.Resources>
+        <helpers:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+        <helpers:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Background" Value="{DynamicResource ContainerBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlDefaultBorderBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <!--using VCA=top because a multilined textbox is assumed-->
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="AllowDrop" Value="true" />
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        </Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Background" Value="{DynamicResource ContainerBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}" />
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <!--using VCA=top because a multilined textbox is assumed-->
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="AllowDrop" Value="true" />
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border Padding="3" BorderThickness="1" BorderBrush="{DynamicResource ControlDarkerBorderBrush}">
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Название" />
+            <Label Grid.Row="0" Grid.Column="1" Content="{Binding JobName}"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Оклад"
+                       Visibility="{Binding Payment
+                       ,Converter={StaticResource ObjectToVisibilityConverter}
+                       ,ConverterParameter=Inverse}"/>
+
+            <Label Grid.Row="1" Grid.Column="1" Content="{Binding Payment}"
+                   Visibility="{Binding Payment
+                   ,Converter={StaticResource ObjectToVisibilityConverter}
+                   ,ConverterParameter=Inverse}"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Опыт" />
+            <Label Grid.Row="2" Grid.Column="1" Content="{Binding Experience, StringFormat={}{0} лет }" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Оброзование" />
+            <Label Grid.Row="3" Grid.Column="1" Content="{Binding EducationString }" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" />
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                       TextAlignment="Center"
+                       TextWrapping="WrapWithOverflow"
+                       Text="Чтобы откликнуться на вакансию необходимо авторизоваться в системе"
+
+                       Visibility="{Binding DataContext.CurrentUser
+                       ,RelativeSource={RelativeSource AncestorType={x:Type Window}}
+                       ,Converter={StaticResource ObjectToVisibilityConverter}
+                       ,ConverterParameter=Inverse}"/>
+
+            <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource RoundedCorners}"
+
+                    IsEnabled="{Binding DataContext.CurrentUser
+                    ,RelativeSource={RelativeSource AncestorType={x:Type Window}}
+                    ,Converter={StaticResource ObjectToBoolConverter}}"
+
+                    Command="{Binding DataContext.CurrentUser
+                    ,RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                    HorizontalAlignment="Center"
+                    Content="Откликнуться"
+                    Padding="15"
+                    Margin="20"
+                    FontSize="20"/>
+        </Grid>
+    </Border>
+
+</UserControl>

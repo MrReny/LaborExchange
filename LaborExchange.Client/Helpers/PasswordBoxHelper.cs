@@ -1,6 +1,7 @@
 ﻿using System.Security;
 using System.Windows;
 using System.Windows.Controls;
+using LaborExchange.Commons;
 
 namespace LaborExchange.Client.Helpers
 {

@@ -8,7 +8,7 @@ namespace LaborExchange.Commons
     [MessagePackObject]
     public class Employee
     {
-        [DisplayName("ID")]
+        [Browsable(false)]
         [Key(0)]
         public int Id { get; set; }
 
@@ -26,9 +26,14 @@ namespace LaborExchange.Commons
         [DisplayName("Фамилия")]
         [Key(3)] public string FamilyName => Passport.FamilyName;
 
-        [DisplayName("Образование")]
+        [Browsable(false)]
         [Key(4)]
         public Education? Education { get; set; }
+
+        [DisplayName("Образование")]
+        [IgnoreMember]
+        //TODO добавить конверторы колонок и избавиться от этого стыда
+        public string EducationString => Education.GetEnumDescription();
 
         [DisplayName("Опыт")]
         [Key(5)]

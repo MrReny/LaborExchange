@@ -4,9 +4,68 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LaborExchange.Client"
+             xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        
-    </Grid>
+    <UserControl.Resources>
+        <helpers:EmployeeFullnameConverter x:Key="EmployeeFullnameConverter" />
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Background" Value="{DynamicResource ContainerBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlDefaultBorderBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <!--using VCA=top because a multilined textbox is assumed-->
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="AllowDrop" Value="true" />
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        </Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Background" Value="{DynamicResource ContainerBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}" />
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <!--using VCA=top because a multilined textbox is assumed-->
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="AllowDrop" Value="true" />
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border Padding="3" BorderThickness="1" BorderBrush="{DynamicResource ControlDarkerBorderBrush}">
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="ФИО" />
+            <Label Grid.Row="0" Grid.Column="1">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource EmployeeFullnameConverter}" Mode="OneWay">
+                        <Binding />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Опыт" />
+            <Label Grid.Row="1" Grid.Column="1" Content="{Binding Experience, StringFormat={}{0} лет }" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Оброзование" />
+            <Label Grid.Row="2" Grid.Column="1" Content="{Binding EducationString }" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
+        </Grid>
+    </Border>
+
 </UserControl>

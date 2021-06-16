@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:LaborExchange.Client"
+        xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
         Width="1200" Height="720"
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
@@ -9,55 +10,128 @@
         Style="{DynamicResource CustomWindowStyle}">
 
     <Window.Resources>
+
         <DataTemplate DataType="{x:Type local:LoginViewModel}">
-            <local:LoginView/>
+            <local:LoginView />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type local:EmployeesViewModel}">
-            <local:EmployeesView/>
+            <local:EmployeesView />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type local:ResourceEditorViewModel}">
-            <local:ResourceEditorView/>
+            <local:ResourceEditorView />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type local:JobsViewModel}">
-            <local:JobsView/>
+            <local:JobsView />
         </DataTemplate>
 
+        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"
+               TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="{DynamicResource BackgroundColour}" />
+            <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlDefaultBorderBrush}" />
+            <Setter Property="Padding" Value="0,0,2,0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type DataGridCell}}"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Padding" Value="0,0,2,0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource FocusVisual}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd"
+                                        Value="{DynamicResource ControlPrimaryMouseOverBackground}" />
+                                <Setter Property="BorderBrush" TargetName="Bd"
+                                        Value="{DynamicResource ControlPrimaryMouseOverBorderBrush}" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                    <Condition Property="IsSelected" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd"
+                                        Value="{DynamicResource ControlPrimaryDisabledBackground}" />
+                                <Setter Property="BorderBrush" TargetName="Bd"
+                                        Value="{DynamicResource ControlPrimaryDisabledBorderBrush}" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                    <Condition Property="IsSelected" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd"
+                                        Value="{DynamicResource ControlPrimarySelectedBackground}" />
+                                <Setter Property="BorderBrush" TargetName="Bd"
+                                        Value="{DynamicResource ControlPrimarySelectedBorderBrush}" />
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="Bd"
+                                        Value="{DynamicResource ControlDisabledGlythColour}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
 
-    <DockPanel>
-        <Border DockPanel.Dock="Top" BorderBrush="Black"
-                BorderThickness="0,0,1,0">
-            <DockPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-                <Button Content="{Binding EmployeesViewModel.Name}"
 
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{Binding EmloyeesViewModel}"
-                        Margin="2,5"/>
+        <Button Content="{Binding EmployeesViewModel.Name}"
 
-                <Button Content="{Binding JobsViewModel.Name}"
+                Command="{Binding ChangeViewCommand}"
+                CommandParameter="{Binding EmployeesViewModel}"
+                Visibility="{Binding IsEmployeesTabVisible}" />
 
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{Binding JobsViewModel}"
-                        Margin="2,5"/>
+        <Button Grid.Row="0" Grid.Column="1" Content="{Binding JobsViewModel.Name}"
 
-                <Button Content="{Binding LoginViewModel.Name}"
+                Command="{Binding ChangeViewCommand}"
+                CommandParameter="{Binding JobsViewModel}" />
 
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{Binding LoginViewModel}"
-                        Margin="2,5"/>
-                <Button Content="Изменить цвет текста"
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{Binding StyleEditViewModel}"
-                        Margin="2,5"/>
-            </DockPanel>
-        </Border>
-        <ContentControl Content="{Binding Path = CurrentViewModel}"/>
-    </DockPanel>
+        <Button Grid.Row="0" Grid.Column="2" Content="Изменить цвет текста"
+                Command="{Binding ChangeViewCommand}"
+                CommandParameter="{Binding StyleEditViewModel}" />
+
+        <local:UserPanelView Grid.Row="0" Grid.Column="3" DockPanel.Dock="Right" />
+
+
+        <ContentControl Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0"
+                        Content="{Binding Path = CurrentViewModel}" />
+    </Grid>
 
 
 </Window>

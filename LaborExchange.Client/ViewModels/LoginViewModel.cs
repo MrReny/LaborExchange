@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security;
 using LaborExchange.Client.Helpers;
+using LaborExchange.Commons;
 using NLog;
 
 namespace LaborExchange.Client
@@ -47,15 +48,14 @@ namespace LaborExchange.Client
                     }
                     catch (Exception e)
                     {
-                        //TODO
-                        Console.WriteLine(e);
+                        _logger.Error(e);
                     }
 
                 });
 
             CancelCommand = new DelegateCommand(() =>
             {
-                //TODO
+                _parent.SwitchToView(this);
             });
         }
 

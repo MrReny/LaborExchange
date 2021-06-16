@@ -17,7 +17,11 @@ namespace LaborExchange.Server
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseFirebird(
-                "ServerType=0;User=SYSDBA;Password=masterkey;DataSource=localhost;Database=C:/Programming/DB/LABOREXCHANGE.FDB");
+                "ServerType=0;" +
+                "User=SYSDBA;" +
+                "Password=masterkey;" +
+                "DataSource=localhost;" +
+                "Database=C:/Programming/DB/LABOREXCHANGE.FDB");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
