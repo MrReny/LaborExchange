@@ -20,6 +20,11 @@
         <DataTemplate DataType="{x:Type local:ResourceEditorViewModel}">
             <local:ResourceEditorView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:JobsViewModel}">
+            <local:JobsView/>
+        </DataTemplate>
+
     </Window.Resources>
 
 
@@ -27,25 +32,25 @@
         <Border DockPanel.Dock="Top" BorderBrush="Black"
                 BorderThickness="0,0,1,0">
             <DockPanel>
-                <ItemsControl FlowDirection="LeftToRight"
-                              ItemsSource="{Binding MainViewModel.ViewModels}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button Content="{Binding Name}"
 
-                                    Command="{Binding DataContext.ChangeViewCommand,
-                                 RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                    CommandParameter="{Binding }"
-                                    Margin="2,5"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <Button Content="{Binding EmployeesViewModel.Name}"
+
+                        Command="{Binding ChangeViewCommand}"
+                        CommandParameter="{Binding EmloyeesViewModel}"
+                        Margin="2,5"/>
+
+                <Button Content="{Binding JobsViewModel.Name}"
+
+                        Command="{Binding ChangeViewCommand}"
+                        CommandParameter="{Binding JobsViewModel}"
+                        Margin="2,5"/>
+
                 <Button Content="{Binding LoginViewModel.Name}"
 
                         Command="{Binding ChangeViewCommand}"
                         CommandParameter="{Binding LoginViewModel}"
                         Margin="2,5"/>
-                <Button Content="Edit style"
+                <Button Content="Изменить цвет текста"
                         Command="{Binding ChangeViewCommand}"
                         CommandParameter="{Binding StyleEditViewModel}"
                         Margin="2,5"/>

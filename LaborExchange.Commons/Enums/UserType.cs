@@ -1,5 +1,8 @@
-﻿namespace LaborExchange.Commons
+﻿using MessagePack;
+
+namespace LaborExchange.Commons
 {
+
     public enum UserType
     {
         Administrator,

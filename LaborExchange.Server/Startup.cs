@@ -27,6 +27,8 @@ namespace LaborExchange.Server
         {
             services.AddGrpc();
             services.AddMagicOnion();
+
+            services.AddServerSideBlazor();
             services.AddDbContext<LaborExchangeDbContext>(o =>
             {
                 o.UseFirebird(new FbConnection("ServerType=0;User=SYSDBA;Password=masterkey;CharSet=WIN1251;Dialect=3;Database=localhost:3050/C:\\Programming\\LaborExchange\\LABOREXCHANGE.FDB"));

@@ -1,13 +1,21 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace LaborExchange.Client.Themes
 {
     public enum ThemeTypes
     {
+        [Description("Светлая тема")]
         Light,
+
+        [Description("Цветастая светлая тема")]
         ColourfulLight,
+
+        [Description("Темная тема")]
         Dark,
+
+        [Description("Цветастая темная тема")]
         ColourfulDark
     }
 

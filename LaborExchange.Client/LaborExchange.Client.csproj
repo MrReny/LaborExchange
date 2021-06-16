@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net5.0-windows10.0.18362.0</TargetFramework>
+        <TargetFramework>net5.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
@@ -15,6 +15,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LaborExchange.Commons\LaborExchange.Commons.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\ResourceEditorView.xaml.cs">
+        <DependentUpon>ResourceEditorView.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

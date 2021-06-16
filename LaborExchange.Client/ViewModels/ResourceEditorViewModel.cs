@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -51,21 +52,11 @@ namespace LaborExchange.Client
 
         public DelegateCommand SetStyle { get; set; }
 
-        public ThemeTypes ValueType { get; set; }
+        public string ValueType { get; set; }
 
         public ResourceEditorViewModel()
         {
-            Style = ThemesController.GetTheme(ThemeTypes.ColourfulDark);
-
-            var lst = new List<DictionaryEntry>();
-            foreach (var dictEntry in Style)
-            {
-                var r = (DictionaryEntry)dictEntry;
-                if(r.Value is SolidColorBrush) lst.Add(r);
-            }
-            Properties = new ObservableCollection<DictionaryEntry>(lst);
-
-            SelectedProperty = Properties[0];
+            BuildType();
 
             SetColor = new DelegateCommand(
                 () =>
@@ -104,7 +95,21 @@ namespace LaborExchange.Client
 
         private void ApplyStandardStyle()
         {
-            ThemesController.SetTheme(ValueType);
+            try
+            {
+                var m = typeof(ThemeTypes)
+                    .GetMembers().FirstOrDefault(m => m.GetCustomAttributes(typeof(DescriptionAttribute), true)
+                        .Cast<DescriptionAttribute>()
+                        .FirstOrDefault()
+                        ?.Description == ValueType);
+                ThemesController.SetTheme((ThemeTypes)Enum.Parse(typeof(ThemeTypes), m?.Name));
+                BuildType();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+            }
+
         }
 
         private void ApplyStyle()
@@ -119,6 +124,21 @@ namespace LaborExchange.Client
 
             var index = Application.Current.Resources.MergedDictionaries.IndexOf(old);
             Application.Current.Resources.MergedDictionaries[index<0? 0: index] = Style;
+        }
+
+        private void BuildType()
+        {
+            Style = ThemesController.GetTheme(ThemesController.CurrentTheme);
+
+            var lst = new List<DictionaryEntry>();
+            foreach (var dictEntry in Style)
+            {
+                var r = (DictionaryEntry)dictEntry;
+                if(r.Value is SolidColorBrush) lst.Add(r);
+            }
+            Properties = new ObservableCollection<DictionaryEntry>(lst);
+
+            SelectedProperty = Properties[0];
         }
     }
 }

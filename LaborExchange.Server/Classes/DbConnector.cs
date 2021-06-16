@@ -38,22 +38,31 @@ namespace LaborExchange.Server
 
         public User GetUser(string login, string password)
         {
-            return _dbContext.USERS
-                .Include(u => u.Employee)
-                .ThenInclude(e=>e.PASSPORT)
-                .Include(u => u.Employer)
-                .ThenInclude(e=> e.Jobs)
-                .Where(u => u.LOGIN == login && u.PASSWORD == password)
-                .Select(
-                    u =>
-                        new User()
-                        {
-                            Login = u.LOGIN,
-                            Password = u.PASSWORD,
-                            Email = u.EMAIL,
-                            UserId = u.ID,
-                            UserType = (UserType) u.USER_TYPE
-                        }).FirstOrDefault();
+            try
+            {
+                return _dbContext.USERS
+                                .Include(u => u.Employee)
+                                .ThenInclude(e=>e.PASSPORT)
+                                .Include(u => u.Employer)
+                                .ThenInclude(e=> e.Jobs)
+                                .Where(u => u.LOGIN == login && u.PASSWORD == password)
+                                .Select(
+                                    u =>
+                                        new User()
+                                        {
+                                            Login = u.LOGIN,
+                                            Password = u.PASSWORD,
+                                            Email = u.EMAIL,
+                                            UserId = u.ID,
+                                            UserType = (UserType) u.USER_TYPE
+                                        }).FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return null;
+            }
+
         }
 
         public bool AddUser(User user)

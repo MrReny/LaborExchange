@@ -4,22 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
-             xmlns:themes="clr-namespace:LaborExchange.Client.Themes"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:themes="clr-namespace:LaborExchange.Client.Themes"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <helpers:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter" />
         <Style TargetType="{x:Type xctk:ColorPicker}">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="{StaticResource ControlBrightDefaultBorderBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlBrightDefaultBorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="{StaticResource ControlDefaultForeground}"/>
-            <Setter Property="TabBackground" Value="{StaticResource ControlDefaultBackground}"/>
-            <Setter Property="TabForeground" Value="{StaticResource ControlDefaultForeground}"/>
-            <Setter Property="HeaderBackground" Value="{StaticResource ControlDefaultBackground}"/>
-            <Setter Property="DropDownBackground" Value="{StaticResource ControlDefaultBackground}"/>
-            <Setter Property="HeaderForeground" Value="{StaticResource ControlDefaultForeground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}"/>
+            <Setter Property="TabBackground" Value="{DynamicResource ControlDefaultBackground}"/>
+            <Setter Property="TabForeground" Value="{DynamicResource ControlDefaultForeground}"/>
+            <Setter Property="HeaderBackground" Value="{DynamicResource ControlDefaultBackground}"/>
+            <Setter Property="DropDownBackground" Value="{DynamicResource ControlDefaultBackground}"/>
+            <Setter Property="HeaderForeground" Value="{DynamicResource ControlDefaultForeground}"/>
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -39,7 +39,7 @@
         <StackPanel Grid.Column="1">
             <ComboBox SelectedValue="{Binding ValueType}"
                       ItemsSource="{Binding Source={helpers:EnumToItemsSource {x:Type themes:ThemeTypes}}}"/>
-            <Button Content="SetStyle" Command="{Binding  Path =SetStyle}"/>
+            <Button Content="Установить текст" Command="{Binding  Path =SetStyle}"/>
             <Label Content="{Binding SelectedProperty.Key}"/>
 
             <xctk:ColorPicker

@@ -58,7 +58,7 @@ namespace LaborExchange.Server
             var user = _users?.Get(ConnectionId);
             if (user == null) return new Job[0];
 
-            return  _dbConnector.GetJobs();
+            return _dbConnector.GetJobs();
         }
 
         public async Task<bool> MakeOffer(Job job, Employee employee)

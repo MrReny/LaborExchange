@@ -23,8 +23,6 @@ namespace LaborExchange.Client
 
         public ResourceEditorViewModel StyleEditViewModel { get; set; }
 
-        public ObservableCollection<ViewModelBase> ViewModels { get; set; } = new ObservableCollection<ViewModelBase>();
-
         private ViewModelBase _currentViewModel;
 
         public ViewModelBase CurrentViewModel
@@ -49,10 +47,7 @@ namespace LaborExchange.Client
 
         public MainWindowViewModel()
         {
-            var res = new ResourceEditorViewModel();
-
             LoginViewModel = new LoginViewModel(this);
-
 
             StyleEditViewModel = new ResourceEditorViewModel();
 
@@ -60,15 +55,13 @@ namespace LaborExchange.Client
 
             EmployeesViewModel = new EmployeesViewModel();
 
-            ViewModels.Add(JobsViewModel);
-
             CurrentViewModel = LoginViewModel;
 
         }
 
         public void SwitchToView(ViewModelBase view)
         {
-            if (CurrentViewModel == LoginViewModel || CurrentViewModel == view) CurrentViewModel = JobsViewModel;
+            if (CurrentViewModel == LoginViewModel && CurrentViewModel == view) CurrentViewModel = JobsViewModel;
             CurrentViewModel = view;
         }
 
