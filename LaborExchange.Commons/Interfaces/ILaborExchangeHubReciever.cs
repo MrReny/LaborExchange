@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-
+﻿
 namespace LaborExchange.Commons
 {
     public interface ILaborExchangeHubReciever

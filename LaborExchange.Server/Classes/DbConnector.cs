@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Numerics;
 using FirebirdSql.Data.FirebirdClient;
 using LaborExchange.Commons;
 using LaborExchange.DataBaseModel;

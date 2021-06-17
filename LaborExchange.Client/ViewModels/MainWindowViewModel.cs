@@ -2,9 +2,6 @@
 using System.Windows;
 using LaborExchange.Commons;
 using NLog;
-using ToastNotifications;
-using ToastNotifications.Lifetime;
-using ToastNotifications.Position;
 
 namespace LaborExchange.Client
 {

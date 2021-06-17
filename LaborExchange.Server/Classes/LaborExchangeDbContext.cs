@@ -1,6 +1,4 @@
-﻿using System.Net.Mime;
-using FirebirdSql.Data.FirebirdClient;
-using LaborExchange.DataBaseModel;
+﻿using LaborExchange.DataBaseModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace LaborExchange.Server
