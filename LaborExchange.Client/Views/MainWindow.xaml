@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:LaborExchange.Client"
         xmlns:helpers="clr-namespace:LaborExchange.Client.Helpers"
+        xmlns:services="clr-namespace:LaborExchange.Client.Services"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         Width="1200" Height="720"
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
@@ -122,7 +124,7 @@
                 Command="{Binding ChangeViewCommand}"
                 CommandParameter="{Binding JobsViewModel}" />
 
-        <Button Grid.Row="0" Grid.Column="2" Content="Изменить цвет текста"
+        <Button Grid.Row="0" Grid.Column="2" Content=""
                 Command="{Binding ChangeViewCommand}"
                 CommandParameter="{Binding StyleEditViewModel}" />
 
@@ -132,6 +134,8 @@
         <ContentControl Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0"
                         Content="{Binding Path = CurrentViewModel}" />
     </Grid>
-
+    <b:Interaction.Behaviors>
+        <services:WindowNotificationService/>
+    </b:Interaction.Behaviors>
 
 </Window>

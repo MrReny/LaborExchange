@@ -2,6 +2,9 @@
 using System.Windows;
 using LaborExchange.Commons;
 using NLog;
+using ToastNotifications;
+using ToastNotifications.Lifetime;
+using ToastNotifications.Position;
 
 namespace LaborExchange.Client
 {
@@ -54,6 +57,8 @@ namespace LaborExchange.Client
         public Visibility IsEmployeesTabVisible =>
             CurrentUser?.UserType == UserType.Employer ? Visibility.Visible : Visibility.Collapsed;
 
+
+
         #endregion
 
         #region Commands
@@ -91,11 +96,17 @@ namespace LaborExchange.Client
 
             CurrentViewModel = LoginViewModel;
 
+
+
         }
 
         public void SwitchToView(ViewModelBase view)
         {
-            if (CurrentViewModel == LoginViewModel && this == view) CurrentViewModel = JobsViewModel;
+            if (CurrentViewModel == LoginViewModel && this == view)
+            {
+                CurrentViewModel = JobsViewModel;
+                return;
+            }
             CurrentViewModel = view;
         }
 

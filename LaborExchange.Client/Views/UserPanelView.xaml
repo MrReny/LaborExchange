@@ -12,7 +12,8 @@
     </UserControl.Resources>
     <Menu>
         <MenuItem Header="O" ToolTip="Profile" >
-
+            <Label Content="{Binding CurrentUser.Login}"/>
+            <Label Content="{Binding CurrentUser.Email}"/>
         </MenuItem>
         <MenuItem Header="->" ToolTip="Login"
                   Visibility="{Binding Path=CurrentUser,

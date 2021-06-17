@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Security;
 using LaborExchange.Client.Helpers;
+using LaborExchange.Client.Services;
 using LaborExchange.Commons;
 using NLog;
+using Splat;
+using ToastNotifications.Messages;
 
 namespace LaborExchange.Client
 {
@@ -38,17 +41,20 @@ namespace LaborExchange.Client
                         var user = await Connector.Instance.Client.Login(UserName, Password.ToUnsecuredString());
                         if( user != null)
                         {
+
                             _parent.ChangeUser(user);
                             _parent.SwitchToView(_parent);
+                            Locator.Current.GetService<INotificationService>()?.ShowSuccess($"Добро пожаловать {UserName}");
                         }
                         else
                         {
-                            //TODO
+                            Locator.Current.GetService<INotificationService>()?.ShowError("Неверные логин или пароль");
                         }
                     }
                     catch (Exception e)
                     {
                         _logger.Error(e);
+                        Locator.Current.GetService<INotificationService>()?.ShowError("Нет соединения с сервером");
                     }
 
                 });

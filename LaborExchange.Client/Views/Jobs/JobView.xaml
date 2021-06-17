@@ -79,8 +79,7 @@
 
                        Visibility="{Binding DataContext.CurrentUser
                        ,RelativeSource={RelativeSource AncestorType={x:Type Window}}
-                       ,Converter={StaticResource ObjectToVisibilityConverter}
-                       ,ConverterParameter=Inverse}"/>
+                       ,Converter={StaticResource ObjectToVisibilityConverter}}"/>
 
             <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource RoundedCorners}"
 
@@ -88,8 +87,8 @@
                     ,RelativeSource={RelativeSource AncestorType={x:Type Window}}
                     ,Converter={StaticResource ObjectToBoolConverter}}"
 
-                    Command="{Binding DataContext.CurrentUser
-                    ,RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                    Command="{Binding DataContext.MakeOfferCommand,
+                    RelativeSource={RelativeSource AncestorType={x:Type local:JobsView}} }"
                     HorizontalAlignment="Center"
                     Content="Откликнуться"
                     Padding="15"

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using LaborExchange.Client.Services;
 using LaborExchange.Commons;
 using NLog;
+using Splat;
 
 namespace LaborExchange.Client
 {
@@ -43,7 +45,7 @@ namespace LaborExchange.Client
 
         public DelegateCommand UpdateJobsCollectionCommand => new DelegateCommand(async () => await PullJobs());
 
-        public DelegateCommand MakeOfferCommand => new DelegateCommand(async () => await PullJobs());
+        public DelegateCommand MakeOfferCommand => new DelegateCommand(async () => await MakeOffer());
 
         #endregion
 
@@ -63,6 +65,7 @@ namespace LaborExchange.Client
             catch (Exception e)
             {
                 _logger.Error(e);
+                Locator.Current.GetService<INotificationService>()?.ShowError("Сервер не доступен");
             }
 
         }
@@ -80,17 +83,17 @@ namespace LaborExchange.Client
                 var result = await a.MakeOffer(offer);
                 if (result)
                 {
-                    //TODO
+                    Locator.Current.GetService<INotificationService>()?.ShowSuccess("Предложение отправлено");
                 }
                 else
                 {
-                    //TODO
+                    Locator.Current.GetService<INotificationService>()?.ShowError("Ошибкеа при отправке предложения");
                 }
             }
             catch (Exception e)
             {
                 _logger.Error(e);
-                //TODO
+                Locator.Current.GetService<INotificationService>()?.ShowError("Сервер не доступен");
             }
 
         }
