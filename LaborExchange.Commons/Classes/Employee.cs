@@ -18,13 +18,25 @@ namespace LaborExchange.Commons
 
         [DisplayName("Имя")]
         [Key(1)]
-        public string FirstName => Passport.FirstName;
+        public string FirstName
+        {
+            get => Passport.FirstName;
+            set => Passport.FirstName = value;
+        }
 
         [DisplayName("Отчество")]
-        [Key(2)] public string SecondName => Passport.SecondName;
+        [Key(2)] public string SecondName
+        {
+            get => Passport.SecondName;
+            set => Passport.SecondName = value;
+        }
 
         [DisplayName("Фамилия")]
-        [Key(3)] public string FamilyName => Passport.FamilyName;
+        [Key(3)] public string FamilyName
+        {
+            get => Passport.FamilyName;
+            set => Passport.FamilyName = value;
+        }
 
         [Browsable(false)]
         [Key(4)]

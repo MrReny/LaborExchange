@@ -1,0 +1,69 @@
+﻿@using LaborExchange.Commons
+@using Microsoft.AspNetCore.Components.Web
+<h2>Количество пользователей: @Count</h2>
+
+<table class="table table-hover">
+    <thead>
+    <th>Id</th>
+    <th>Права</th>
+    <th>Логин</th>
+    <th>Пароль</th>
+    </thead>
+    <tbody>
+        @foreach (var user in Users)
+        {
+             //3)
+            <tr @onclick=@(() => ClickRow(user.UserId)) class="@(user.UserId == Current ? "table-primary" : null)">
+
+                <td>@user.UserId</td>
+                <td>
+                    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                                    SelectedItem="@user.UserType.ToString()"
+                                    Placeholder="@user.UserType.ToString()"
+                                    Data=@Enum.GetNames(typeof(UserType))
+                                    Change="@DropDownChanged"/>
+                </td>
+                <td>@user.Login</td>
+                <td>@user.Password</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code{
+    public List<User> Users = DbConnector.Instance.GetUsers();
+    public int Count => Users.Count;
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    [Parameter]
+    public int Current { get; set; }
+
+    private void OnSelected(string selection)
+    {
+        Console.WriteLine(selection);
+    }
+
+    private async Task ClickRow(int id)
+    {
+        await OnClick.InvokeAsync(CreateArgs(id));
+    }
+
+    private ClickEmployeeEventsArg CreateArgs(int id)
+    {
+        return new ClickEmployeeEventsArg { Id = id };
+    }
+
+    public class ClickEmployeeEventsArg : MouseEventArgs
+    {
+        public int Id { get; set; }
+    }
+
+    private Task DropDownChanged(object arg)
+    {
+        Console.WriteLine("Changed");
+        return Task.CompletedTask;
+    }
+
+}

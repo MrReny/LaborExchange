@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using LaborExchange.Client.Base;
+using LaborExchange.Client.Model;
 using LaborExchange.Client.Services;
 using LaborExchange.Commons;
 using NLog;

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LaborExchange.Commons;
 
-namespace LaborExchange.DataBaseModel
+namespace LaborExchange.Server.DBModel
 {
     public class JOB_VACANCY
     {
@@ -16,21 +16,37 @@ namespace LaborExchange.DataBaseModel
 
         public Nullable<int> EDUCATION { get; set; }
 
+        [NotMapped]
+        public Education Education => EDUCATION == null? Commons.Education.NoEducation: (Education)EDUCATION;
+
+        [NotMapped]
+        public string EducationString => Education.GetEnumDescription();
+
         public Nullable<int> EXPERIENCE { get; set; }
 
-
         public int EMPLOYER_ID { get; set; }
+
         [ForeignKey("EMPLOYER_ID")]
         public EMPLOYER EMPLOYER { get; set; }
 
         public short SATISFIED { get; set; }
+
+        public JOB_VACANCY()
+        {
+
+        }
+
+        public JOB_VACANCY(EMPLOYER employer)
+        {
+            EMPLOYER = employer;
+        }
 
         public Job ToTransportType()
         {
             return new Job()
             {
                 Id = ID,
-                Education = EDUCATION== null? Education.NoEducation:(Education)EDUCATION,
+                Education = Education,
                 Experience = EXPERIENCE ?? 0,
                 Payment = PAYMENT,
                 Employer = EMPLOYER.ToTransportType(),

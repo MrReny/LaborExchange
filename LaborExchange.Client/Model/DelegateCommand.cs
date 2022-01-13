@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace LaborExchange.Client
+namespace LaborExchange.Client.Model
 {
 
     public class DelegateCommand<T> : ICommand

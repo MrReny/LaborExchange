@@ -6,7 +6,7 @@ using LaborExchange.Commons;
 using MagicOnion.Client;
 using NLog;
 
-namespace LaborExchange.Client
+namespace LaborExchange.Client.Model
 {
     public class Connector : ILaborExchangeHubReciever
     {

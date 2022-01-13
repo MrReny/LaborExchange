@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using LaborExchange.Client.Base;
+using LaborExchange.Client.Model;
 using LaborExchange.Commons;
 using NLog;
 

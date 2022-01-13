@@ -1,0 +1,172 @@
+﻿@page "/employees"
+@using LaborExchange.Server.DBModel
+@using Microsoft.AspNetCore.Http
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+@inject NavigationManager NavigationManager
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@inherits LaborExchange.Server.ViewModels.QueryableViewModel<EMPLOYEE>
+
+<h3>Работники</h3>
+<h3>ClaimsPrincipal Data</h3>
+
+<button @onclick="GetClaimsPrincipalData">Get ClaimsPrincipal Data</button>
+
+<p>@_authMessage</p>
+
+@if (_claims.Count() > 0)
+{
+    <ul>
+        @foreach (var claim in _claims)
+        {
+            <li>@claim.Type: @claim.Value</li>
+        }
+    </ul>
+}
+
+<p>@_surnameMessage</p>
+
+@code {
+    private string _authMessage;
+    private string _surnameMessage;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+
+    private async Task GetClaimsPrincipalData()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            _authMessage = $"{user.Identity.Name} is authenticated.";
+            _claims = user.Claims;
+            _surnameMessage =
+                $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
+        }
+        else
+        {
+            _authMessage = "The user is NOT authenticated.";
+        }
+    }
+}
+
+@*TODO Больше генериков богу генериков, я тут DRYем просто пол вытер - переделать*@
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить резюме" Click="@InsertRow" Disabled=@(ItemToInsert != null)/>
+<RadzenDataGrid @ref="ItemsGrid" AllowFiltering="true" AllowColumnResize="true"
+                FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" AllowSorting="true"
+                Data="@Items" TItem="EMPLOYEE" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+                EditMode="DataGridEditMode.Single"
+                RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
+    <Columns>
+
+        <RadzenDataGridColumn TItem="EMPLOYEE" Property="ID" Filterable="false" Title="ID" Frozen="true" Width="70px"
+                              TextAlign="TextAlign.Center"/>
+
+        <RadzenDataGridColumn TItem="EMPLOYEE" Property="FamilyName" Title="Фамилия" Width="140px">
+            <EditTemplate Context="employee">
+                <RadzenTextBox @bind-value="employee.FamilyName"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="EMPLOYEE" Property="FirstName" Title="Имя" Frozen="true" Width="140px">
+            <EditTemplate Context="employee">
+                <RadzenTextBox @bind-value="employee.FirstName"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="EMPLOYEE" Property="SecondName" Title="Отчество" Width="140px">
+            <EditTemplate Context="employee">
+                <RadzenTextBox @bind-value="employee.SecondName"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="EMPLOYEE" Property="EducationString" Title="Образование" Width="140px"/>
+
+        <RadzenDataGridColumn TItem="EMPLOYEE" Property="EXPERIENCE" Title="Опыт лет" Width="140px">
+            <EditTemplate Context="employee">
+                <RadzenNumeric TValue="int?" TItem="int?" @bind-value="employee.EXPERIENCE"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        @*TODO только для админа*@
+        <RadzenDataGridColumn TItem="EMPLOYEE" Title="Edit" Width="140px">
+            <Template Context="employee">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Class="m-1"
+                              Click="@(_ => EditRow(employee))" @onclick:stopPropagation="true"/>
+            </Template>
+
+            <EditTemplate Context="employee">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" Class="m-1"
+                              Click="@(_ => SaveRow(employee))"/>
+
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1"
+                              Click="@(_ => CancelEdit(employee))"/>
+
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        @*TODO только для админа*@
+        <RadzenDataGridColumn TItem="EMPLOYEE" Context="employee" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+            <Template Context="employee">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(employee))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="employee">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(employee))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+    </Columns>
+</RadzenDataGrid>
+
+@code{
+
+
+    #region Override
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (ViewHttpContextAccessor?.HttpContext?.Request == null) return;
+
+            //CurrentContext = ViewHttpContextAccessor.HttpContext;
+            Console.WriteLine(ViewHttpContextAccessor.HttpContext.User.Identity);
+            Items = LocalDbContext.EMPLOYEES.Include("PASSPORT").ToList();
+            await base.OnInitializedAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+    }
+
+    public new async Task InsertRow()
+    {
+        try
+        {
+            var now = DateTime.UtcNow.Millisecond;
+            var rnd = new Random(now.GetHashCode() + now);
+            ItemToInsert = new EMPLOYEE{PASSPORT = new PASSPORT()
+            {
+                PASSPORT_SERIE = rnd.Next(9999),
+                PASSPORT_NUMBER = rnd.Next(999999),
+                PASSPORT_DATE_OF_ISSUE = new DateTime().AddMilliseconds(rnd.Next()),
+                PASSPORT_PLACE_OF_ISSUE = new DateTime().AddMilliseconds(rnd.Next()).GetHashCode().ToString() // TODO просто что-бы пройти нотнулл
+            }};
+            await ItemsGrid.InsertRow(ItemToInsert);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+    }
+
+    #endregion
+
+}

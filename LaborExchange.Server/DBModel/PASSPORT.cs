@@ -2,18 +2,27 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using LaborExchange.Commons;
 
-namespace LaborExchange.DataBaseModel
+namespace LaborExchange.Server.DBModel
 {
     public class PASSPORT
     {
         [Key]
         public int ID { get; set; }
+
         public string FIRST_NAME { get; set; }
+
         public string SECOND_NAME { get; set; }
+
         public string FAMILY_NAME { get; set; }
+
+        public DateTime PASSPORT_DATE_OF_BIRTH { get; set; }
+
         public int PASSPORT_SERIE { get; set; }
+
         public int PASSPORT_NUMBER { get; set; }
+
         public DateTime PASSPORT_DATE_OF_ISSUE { get; set; }
+
         public string PASSPORT_PLACE_OF_ISSUE { get; set; }
 
         public Passport ToTransportType()

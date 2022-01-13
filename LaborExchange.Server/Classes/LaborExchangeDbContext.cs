@@ -1,4 +1,4 @@
-﻿using LaborExchange.DataBaseModel;
+﻿using LaborExchange.Server.DBModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace LaborExchange.Server

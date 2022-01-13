@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using LaborExchange.Client.Base;
+using LaborExchange.Client.Model;
 using LaborExchange.Client.Themes;
 using NLog;
 

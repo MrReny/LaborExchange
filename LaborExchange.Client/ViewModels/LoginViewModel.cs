@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security;
+using LaborExchange.Client.Base;
 using LaborExchange.Client.Helpers;
+using LaborExchange.Client.Model;
 using LaborExchange.Client.Services;
 using LaborExchange.Commons;
 using NLog;

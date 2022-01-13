@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LaborExchange.Commons;
 
-namespace LaborExchange.DataBaseModel
+namespace LaborExchange.Server.DBModel
 {
     public class EMPLOYER
     {

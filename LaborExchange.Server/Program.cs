@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace LaborExchange.Server
 {
@@ -19,12 +13,23 @@ namespace LaborExchange.Server
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.ConfigureKestrel(options =>
+                .ConfigureWebHostDefaults(webBuilder =>
+
+                {
+                    // Использую кестрел - т.к мультиплатформа
+                    webBuilder.UseKestrel(options =>
                     {
-                        // Setup a HTTP/2 endpoint without TLS.
+                        options.ListenAnyIP(5002, o=> o.UseHttps()); // Для blazor.
+                                                                     // Добавил сюда TLS так как веб без защиты в 2022 это смех конечно
+                                                                     // Но с сертификатам всеравно мотаться не хочу
+
                         options.ListenLocalhost(5000, o => o.Protocols =
-                            HttpProtocols.Http2);
+                            HttpProtocols.Http2); // Setup a HTTP/2 endpoint without TLS.
+                                                  // Используется для MagicOnion - он работает поверх gRPC
+                                                  // Не защищенное соединение т.к не хочу мотаться с сертификатами
                     });
-                    webBuilder.UseStartup<Startup>(); });
+
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

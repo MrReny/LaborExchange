@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FirebirdSql.Data.FirebirdClient;
 using LaborExchange.Commons;
-using LaborExchange.DataBaseModel;
+using LaborExchange.Server.DBModel;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
@@ -64,6 +66,33 @@ namespace LaborExchange.Server
             }
         }
 
+        public List<User> GetUsers()
+        {
+            try
+            {
+                using (_dbContext)
+                    return _dbContext.USERS
+                        .Include(u => u.Employee)
+                        .ThenInclude(e => e.PASSPORT)
+                        .Include(u => u.Employer)
+                        .ThenInclude(e => e.Jobs)
+                        .Select(u =>
+                            new User()
+                            {
+                                Login = u.LOGIN,
+                                Password = u.PASSWORD,
+                                Email = u.EMAIL,
+                                UserId = u.ID,
+                                UserType = (UserType) u.USER_TYPE
+                            }).ToList();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return null;
+            }
+        }
+
         public bool AddUser(User user)
         {
             //TODO Password is insecure
@@ -88,11 +117,11 @@ namespace LaborExchange.Server
             }
         }
 
-        public Employee[] GetEmployees()
+        public async Task<Employee[]> GetEmployees()
         {
             try
             {
-                using (_dbContext)
+                await using (_dbContext)
                     return _dbContext.EMPLOYEES
                         .Include(e => e.PASSPORT)
                         .Select(e => e.ToTransportType())
@@ -105,26 +134,28 @@ namespace LaborExchange.Server
             }
         }
 
-        public void AddEmployee(Employee employee)
+        public async Task<bool> AddEmployee(Employee employee)
         {
             try
             {
-                using (_dbContext)
+                await using (_dbContext)
                     _dbContext.EMPLOYEES.Add(EMPLOYEE.FromTransportType(employee));
             }
             catch (Exception e)
             {
                 _logger.Error(e);
-                //TODO Logging
+                return false;
             }
+
+            return true;
         }
 
-        public void AddEmployer(Employer employer)
+        public async Task AddEmployer(Employer employer)
         {
             try
             {
                 var e = EMPLOYER.FromTransportType(employer);
-                using (_dbContext)
+                await using (_dbContext)
                     _dbContext.EMPLOYERS.Add(e);
             }
             catch (Exception e)
@@ -133,11 +164,11 @@ namespace LaborExchange.Server
             }
         }
 
-        public Job[] GetJobs()
+        public async Task<Job[]> GetJobs()
         {
             try
             {
-                using (_dbContext)
+                await using (_dbContext)
                     return _dbContext.JOB_VACANCIES
                         .Include(j => j.EMPLOYER)
                         .Where(j => j.SATISFIED == 0)
@@ -151,24 +182,27 @@ namespace LaborExchange.Server
             }
         }
 
-        public void AddJobs(Job job)
+        public async Task<bool> AddJobs(Job job)
         {
             try
             {
-                using (_dbContext)
+                await using (_dbContext)
                     _dbContext.Add(JOB_VACANCY.FromTransportType(job));
             }
             catch (Exception e)
             {
                 _logger.Error(e);
+                return false;
             }
+
+            return true;
         }
 
-        public JobOffer[] FindOffers(int employeeId, int jobId)
+        public async Task<JobOffer[]> FindOffers(int employeeId, int jobId)
         {
             try
             {
-                using (_dbContext)
+                await using (_dbContext)
                 {
                     if (employeeId != 0)
                         return _dbContext.JOB_OFFERS
@@ -194,11 +228,11 @@ namespace LaborExchange.Server
             }
         }
 
-        public bool AddOffer(JobOffer offer)
+        public async Task<bool> AddOffer(JobOffer offer)
         {
             try
             {
-                using (_dbContext)
+                await using (_dbContext)
                 {
                     var id = _dbContext.JOB_OFFERS.Last().ID + 1;
                     offer.Id = id;
@@ -215,11 +249,11 @@ namespace LaborExchange.Server
         }
 
 
-        public bool FinishOffer(JobOffer offer)
+        public async Task<bool> FinishOffer(JobOffer offer)
         {
             try
             {
-                using (_dbContext)
+                await using (_dbContext)
                 {
                     _dbContext.JOB_OFFERS.Update(JOB_OFFER.FromTransportType(offer));
                 }

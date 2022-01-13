@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LaborExchange.DataBaseModel
+namespace LaborExchange.Server.DBModel
 {
     [Table("USERS")]
     public class USER

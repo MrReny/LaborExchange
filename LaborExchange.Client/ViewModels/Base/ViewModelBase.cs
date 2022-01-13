@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using LaborExchange.Commons;
 
-namespace LaborExchange.Client
+namespace LaborExchange.Client.Base
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

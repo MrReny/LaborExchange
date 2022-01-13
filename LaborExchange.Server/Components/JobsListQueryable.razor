@@ -1,0 +1,150 @@
+﻿@page "/jobs"
+@page "/jobs/{EmployerId}"
+@using LaborExchange.Server.DBModel
+@using Microsoft.AspNetCore.Http
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@inject NavigationManager NavigationManager
+
+@inherits LaborExchange.Server.ViewModels.QueryableViewModel<JOB_VACANCY>
+<h3>Вакансии</h3>
+
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Новая вакансия" Click="@InsertRow" Disabled=@(ItemToInsert != null)/>
+<RadzenDataGrid @ref="ItemsGrid" AllowFiltering="true" AllowColumnResize="true"
+                FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" AllowSorting="true"
+                Data="@Items" TItem="JOB_VACANCY" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+                EditMode="DataGridEditMode.Single"
+                RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow"
+                RowDoubleClick="@OpenJobPage">
+    <Columns>
+
+        <RadzenDataGridColumn TItem="JOB_VACANCY" Property="ID" Filterable="false" Title="ID" Frozen="true" Width="70px"
+                              TextAlign="TextAlign.Center"/>
+
+        <RadzenDataGridColumn TItem="JOB_VACANCY" Property="VACANCY_NAME" Title="Название" Width="140px">
+            <EditTemplate Context="job">
+                <RadzenTextBox @bind-value="job.VACANCY_NAME"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="JOB_VACANCY" Property="EMPLOYER.LEGAL_NAME" Title="Работодатель" Frozen="true" Width="140px">
+            <EditTemplate Context="job">
+                <RadzenTextBox @bind-value="job.EMPLOYER.LEGAL_NAME"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="JOB_VACANCY" Property="PAYMENT" Title="Зарплата" Width="140px">
+            <EditTemplate Context="job">
+                <RadzenTextBox @bind-value="job.PAYMENT"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="JOB_VACANCY" Property="EducationString" Title="Требуемое образование" Width="140px"/>
+
+        <RadzenDataGridColumn TItem="JOB_VACANCY" Property="EXPERIENCE" Title="Требуемый опыт. Лет" Width="140px">
+            <EditTemplate Context="job">
+                <RadzenNumeric TValue="int?" TItem="int?" @bind-value="job.EXPERIENCE"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+         <Authorized>
+        @*TODO только для админа*@
+        <RadzenDataGridColumn TItem="JOB_VACANCY" Title="Edit" Width="140px" Visible="_isAdminAuthorized">
+            <Template Context="job">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Class="m-1"
+                              Click="@(_ => EditRow(job))" @onclick:stopPropagation="true"/>
+            </Template>
+
+            <EditTemplate Context="job">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" Class="m-1"
+                              Click="@(_ => SaveRow(job))"/>
+
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1"
+                              Click="@(_ => CancelEdit(job))"/>
+
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+         <RadzenDataGridColumn TItem="JOB_VACANCY" Context="job" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+             <Template Context="job">
+                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(job))" @onclick:stopPropagation="true">
+                 </RadzenButton>
+             </Template>
+             <EditTemplate Context="job">
+                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(job))">
+                 </RadzenButton>
+             </EditTemplate>
+         </RadzenDataGridColumn>
+         </Authorized>
+
+    </Columns>
+</RadzenDataGrid>
+
+@code{
+
+    #region auth
+
+    //TODO auth
+    private bool _isAdminAuthorized;
+
+    private ClaimsPrincipal _user;
+
+    #endregion
+
+    [Parameter]
+    public int? EmployerId { get; set; }
+
+    #region override
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (ViewHttpContextAccessor?.HttpContext?.Request == null) return;
+
+            _user = ViewHttpContextAccessor.HttpContext.User;
+            Console.WriteLine(ViewHttpContextAccessor.HttpContext.User.Identity);
+
+            if (EmployerId != null)
+                Items = LocalDbContext.JOB_VACANCIES.Include("EMPLOYER")
+                    .Where(j => EmployerId == j.EMPLOYER_ID)
+                    .ToList();
+
+            else
+                Items = LocalDbContext.JOB_VACANCIES.Include("EMPLOYER")
+                    .ToList();
+
+            await base.OnInitializedAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    public async new Task InsertRow()
+    {
+        try
+        {
+            ItemToInsert = new JOB_VACANCY();
+            await ItemsGrid.InsertRow(ItemToInsert);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    #endregion
+
+    #region Navigation
+
+    void OpenJobPage(DataGridRowMouseEventArgs<JOB_VACANCY> row)
+    {
+        NavigationManager.NavigateTo($"job/{row.Data.ID}");
+    }
+
+    #endregion
+
+}
