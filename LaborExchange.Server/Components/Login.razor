@@ -1,61 +1,39 @@
 ﻿@page "/login"
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Identity
 @using LaborExchange.Server.Services
-@using LaborExchange.Server.DBModel
-@attribute [AllowAnonymous]
-@inject SignInManager<USER> SignInMgr
-@inject UserManager<USER> UserMgr
-@inject NavigationManager NavMgr
+@using Microsoft.AspNetCore.Http
+@inject IUserManager UserManager
+@inject IHttpContextAccessor ViewHttpContextAccessor
+@inject NavigationManager NavigationManager
 
 <h3>Login</h3>
+<div style="display: inline-flex; justify-content: center; width: 100%">
 
-    <label for="email">Email:</label>
-    <input type="email" @bind="Email" name="email" />
-    <label for="password">Password:</label>
-    <input type="password" @bind="password" name="password" />
-    @if (!string.IsNullOrEmpty(error))
-    {
-        <div class="alert-danger">
-            <p>@error</p>
-        </div>
-    }
-    <button @onclick="LoginClicked">Login</button>
+    <RadzenCard style="display: inline-flex; justify-content: center; width: min-content">
+        <RadzenTemplateForm Data=@("SimpleLogin")>
+            <RadzenLogin AllowResetPassword="false"
+                         Login="@(OnLogin)"
+                         Register="@(OnRegister)"/>
+        </RadzenTemplateForm>
+    </RadzenCard>
+</div>
+
+
 
 @code {
-    public string Email { get; set; }
 
-    private string password;
-    private string error;
+    [Parameter]
+    public EventCallback OnLoginCallback { get; set; }
 
-    private async Task LoginClicked()
+    void OnLogin(LoginArgs args)
     {
-        error = null;
-        var usr = await UserMgr.FindByEmailAsync(Email);
-        if (usr == null)
-        {
-            error = "User not found";
-            return;
-        }
-
-
-        if (await SignInMgr.CanSignInAsync(usr))
-        {
-            var result = await SignInMgr.CheckPasswordSignInAsync(usr, password, true);
-            if (result == SignInResult.Success)
-            {
-                Guid key = Guid.NewGuid();
-                BlazorCookieLoginMiddleware.Logins[key] = new LoginInfo { Email = Email, Password = password };
-                NavMgr.NavigateTo($"/login?key={key}", true);
-            }
-            else
-            {
-                error = "Login failed. Check your password.";
-            }
-        }
-        else
-        {
-            error = "Your account is blocked";
-        }
+        var result = UserManager.Validate(args.Username, args.Password);
+        UserManager.SignIn(ViewHttpContextAccessor.HttpContext, result.User);
+        NavigationManager.NavigateTo("/jobs");
     }
+
+    void OnRegister()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
+
 }

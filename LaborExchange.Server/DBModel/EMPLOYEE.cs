@@ -14,8 +14,7 @@ namespace LaborExchange.Server.DBModel
 
         public int USER_ID { get; set; }
 
-        [ForeignKey("USER_ID")]
-        public USER USER { get; set; }
+        [ForeignKey("USER_ID")] public USER USER { get; set; }
 
         public Nullable<int> EDUCATION { get; set; }
         public Nullable<int> EXPERIENCE { get; set; }
@@ -43,20 +42,17 @@ namespace LaborExchange.Server.DBModel
         }
 
         [NotMapped]
-        public Education? Education => EDUCATION == null?Commons.Education.NoEducation: (Education)EDUCATION;
+        public Education? Education => EDUCATION == null ? Commons.Education.NoEducation : (Education)EDUCATION;
 
-        [NotMapped]
-        public string EducationString => Education.GetEnumDescription();
+        [NotMapped] public string EducationString => Education.GetEnumDescription();
 
         public long ITN { get; set; }
 
         public int PASSPORT_ID { get; set; }
-        [ForeignKey("PASSPORT_ID")]
-        public virtual PASSPORT PASSPORT { get; set; }
+        [ForeignKey("PASSPORT_ID")] public virtual PASSPORT PASSPORT { get; set; }
 
         public EMPLOYEE()
         {
-
         }
 
         public EMPLOYEE(PASSPORT passport)
@@ -81,7 +77,7 @@ namespace LaborExchange.Server.DBModel
         {
             return new EMPLOYEE()
             {
-                EDUCATION = (int?) e.Education,
+                EDUCATION = (int?)e.Education,
                 EXPERIENCE = e.Experience,
                 ID = e.Id,
                 ITN = e.Itn,

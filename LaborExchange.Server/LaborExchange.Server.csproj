@@ -7,92 +7,92 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LaborExchange.Commons\LaborExchange.Commons.csproj" />
+        <ProjectReference Include="..\LaborExchange.Commons\LaborExchange.Commons.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="8.0.1" />
-      <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="8.0.1" />
-      <PackageReference Include="MagicOnion" Version="4.3.1" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.13" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.13" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.13" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="5.0.13" />
-      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-      <PackageReference Include="NLog" Version="4.7.11" />
-      <PackageReference Include="Radzen.Blazor" Version="3.14.1" />
+        <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="8.0.1" />
+        <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="8.0.1" />
+        <PackageReference Include="MagicOnion" Version="4.3.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.13" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.13" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.13" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="5.0.13" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+        <PackageReference Include="NLog" Version="4.7.11" />
+        <PackageReference Include="Radzen.Blazor" Version="3.14.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\blazor.polyfill.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\css\site.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\favicon.ico" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\MaterialIcons-Regular.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\roboto-v15-latin-300.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\roboto-v15-latin-700.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\roboto-v15-latin-regular.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Black.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-BlackIt.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Bold.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-BoldIt.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-ExtraLight.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-ExtraLightIt.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-It.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Light.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-LightIt.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Regular.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Semibold.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-SemiboldIt.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\accenture.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\allianz.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\background.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\checkmark.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\community.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\dell.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\deloitte.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\easier-than-you-think.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\eurobank.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\hero.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\import.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\include-radzen.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\install.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\konica.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\microsoft.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\nasa.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\nuget-explorer.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\play.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\premium.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\radzen-nuget.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\radzen.mp4" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\success.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\theme.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\use-component.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\js\blazor.server.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\wwwroot\js\highlight.pack.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\accenture.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\allianz.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\background.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\checkmark.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\community.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\dell.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\deloitte.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\easier-than-you-think.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\eurobank.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\hero.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\import.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\include-radzen.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\install.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\konica.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\microsoft.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\nasa.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\nuget-explorer.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\play.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\premium.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\radzen-nuget.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\radzen.mp4" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\success.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\theme.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\use-component.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\blazor.polyfill.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\css\site.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\favicon.ico" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\MaterialIcons-Regular.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\roboto-v15-latin-300.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\roboto-v15-latin-700.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\roboto-v15-latin-regular.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Black.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-BlackIt.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Bold.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-BoldIt.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-ExtraLight.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-ExtraLightIt.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-It.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Light.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-LightIt.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Regular.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-Semibold.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\fonts\SourceSansPro-SemiboldIt.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\accenture.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\allianz.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\background.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\checkmark.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\community.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\dell.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\deloitte.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\easier-than-you-think.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\eurobank.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\hero.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\import.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\include-radzen.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\install.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\konica.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\microsoft.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\nasa.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\nuget-explorer.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\play.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\premium.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\radzen-nuget.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\radzen.mp4" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\success.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\theme.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\images\use-component.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\js\blazor.server.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\wwwroot\js\highlight.pack.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\accenture.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\allianz.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\background.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\checkmark.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\community.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\dell.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\deloitte.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\easier-than-you-think.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\eurobank.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\hero.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\import.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\include-radzen.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\install.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\konica.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\microsoft.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\nasa.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\nuget-explorer.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\play.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\premium.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\radzen-nuget.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\radzen.mp4" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\success.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\theme.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\use-component.svg" />
     </ItemGroup>
 
 </Project>

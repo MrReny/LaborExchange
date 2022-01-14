@@ -7,24 +7,20 @@ namespace LaborExchange.Server.DBModel
 {
     public class EMPLOYER
     {
-        [Key]
-        public int ID { get; set; }
+        [Key] public int ID { get; set; }
 
         public int USER_ID { get; set; }
 
-        [ForeignKey("USER_ID")]
-        public USER User { get; set; }
+        [ForeignKey("USER_ID")] public USER User { get; set; }
 
         public short EMPLOYER_TYPE { get; set; }
         public string LEGAL_NAME { get; set; }
 
         public ICollection<JOB_VACANCY> Jobs { get; set; }
 
-        [NotMapped]
-        public LEGAL_ENTITY LegalEntity { get; set; }
+        [NotMapped] public LEGAL_ENTITY LegalEntity { get; set; }
 
-        [NotMapped]
-        public SOLE_PROPRITEOR SoleProprietor { get; set; }
+        [NotMapped] public SOLE_PROPRITEOR SoleProprietor { get; set; }
 
         #region Methods
 
@@ -52,6 +48,5 @@ namespace LaborExchange.Server.DBModel
         }
 
         #endregion
-
     }
 }

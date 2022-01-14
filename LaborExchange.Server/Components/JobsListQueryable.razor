@@ -1,16 +1,17 @@
 ﻿@page "/jobs"
 @page "/jobs/{EmployerId}"
 @using LaborExchange.Server.DBModel
-@using Microsoft.AspNetCore.Http
 @using Microsoft.EntityFrameworkCore
-@using System.Security.Claims
-@using Microsoft.AspNetCore.Authorization
+@using LaborExchange.Commons
+@using LaborExchange.Server.Services
 @inject NavigationManager NavigationManager
+
+@inject IUserManager UserManager
 
 @inherits LaborExchange.Server.ViewModels.QueryableViewModel<JOB_VACANCY>
 <h3>Вакансии</h3>
 
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Новая вакансия" Click="@InsertRow" Disabled=@(ItemToInsert != null)/>
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Новая вакансия" Click="@InsertRow" Disabled="@(ItemToInsert != null)" Visible="@(_user is {USER_TYPE: (int)UserType.Administrator or (int)UserType.Employer })"/>
 <RadzenDataGrid @ref="ItemsGrid" AllowFiltering="true" AllowColumnResize="true"
                 FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" AllowSorting="true"
                 Data="@Items" TItem="JOB_VACANCY" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
@@ -48,9 +49,9 @@
             </EditTemplate>
         </RadzenDataGridColumn>
 
-         <Authorized>
-        @*TODO только для админа*@
-        <RadzenDataGridColumn TItem="JOB_VACANCY" Title="Edit" Width="140px" Visible="_isAdminAuthorized">
+
+        <RadzenDataGridColumn TItem="JOB_VACANCY" Title="Edit" Width="140px"
+                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
             <Template Context="job">
                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Class="m-1"
                               Click="@(_ => EditRow(job))" @onclick:stopPropagation="true"/>
@@ -66,18 +67,17 @@
             </EditTemplate>
         </RadzenDataGridColumn>
 
-         <RadzenDataGridColumn TItem="JOB_VACANCY" Context="job" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
-             <Template Context="job">
-                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(job))" @onclick:stopPropagation="true">
-                 </RadzenButton>
-             </Template>
-             <EditTemplate Context="job">
-                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(job))">
-                 </RadzenButton>
-             </EditTemplate>
-         </RadzenDataGridColumn>
-         </Authorized>
-
+        <RadzenDataGridColumn TItem="JOB_VACANCY" Context="job" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px"
+                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
+            <Template Context="job">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(job))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="job">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(job))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
@@ -85,10 +85,7 @@
 
     #region auth
 
-    //TODO auth
-    private bool _isAdminAuthorized;
-
-    private ClaimsPrincipal _user;
+    private USER _user;
 
     #endregion
 
@@ -103,8 +100,7 @@
         {
             if (ViewHttpContextAccessor?.HttpContext?.Request == null) return;
 
-            _user = ViewHttpContextAccessor.HttpContext.User;
-            Console.WriteLine(ViewHttpContextAccessor.HttpContext.User.Identity);
+            _user = UserManager.GetCurrentUser(ViewHttpContextAccessor.HttpContext);
 
             if (EmployerId != null)
                 Items = LocalDbContext.JOB_VACANCIES.Include("EMPLOYER")
@@ -123,7 +119,7 @@
         }
     }
 
-    public async new Task InsertRow()
+    public new async Task InsertRow()
     {
         try
         {

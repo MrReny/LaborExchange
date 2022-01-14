@@ -7,8 +7,7 @@ namespace LaborExchange.Server.DBModel
 {
     public class JOB_VACANCY
     {
-        [Key]
-        public int ID { get; set; }
+        [Key] public int ID { get; set; }
 
         public string VACANCY_NAME { get; set; }
 
@@ -16,24 +15,20 @@ namespace LaborExchange.Server.DBModel
 
         public Nullable<int> EDUCATION { get; set; }
 
-        [NotMapped]
-        public Education Education => EDUCATION == null? Commons.Education.NoEducation: (Education)EDUCATION;
+        [NotMapped] public Education Education => EDUCATION == null ? Education.NoEducation : (Education)EDUCATION;
 
-        [NotMapped]
-        public string EducationString => Education.GetEnumDescription();
+        [NotMapped] public string EducationString => Education.GetEnumDescription();
 
         public Nullable<int> EXPERIENCE { get; set; }
 
         public int EMPLOYER_ID { get; set; }
 
-        [ForeignKey("EMPLOYER_ID")]
-        public EMPLOYER EMPLOYER { get; set; }
+        [ForeignKey("EMPLOYER_ID")] public EMPLOYER EMPLOYER { get; set; }
 
         public short SATISFIED { get; set; }
 
         public JOB_VACANCY()
         {
-
         }
 
         public JOB_VACANCY(EMPLOYER employer)
@@ -66,7 +61,5 @@ namespace LaborExchange.Server.DBModel
                 EMPLOYER_ID = e.Employer.Id
             };
         }
-
-
     }
 }

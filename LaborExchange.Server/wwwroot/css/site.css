@@ -7,16 +7,16 @@ a.ui-button:hover {
 Visual Studio-like style based on original C# coloring by Jason Diamond <jason@diamond.name>
 */
 .hljs {
-display: block;
-overflow-x: auto;
-background: white;
-color: black;
+    display: block;
+    overflow-x: auto;
+    background: white;
+    color: black;
 }
 
 .hljs-comment,
 .hljs-quote,
 .hljs-variable {
-color: #008000;
+    color: #008000;
 }
 
 .hljs-keyword,
@@ -24,7 +24,7 @@ color: #008000;
 .hljs-built_in,
 .hljs-name,
 .hljs-tag {
-color: #00f;
+    color: #00f;
 }
 
 .hljs-string,
@@ -36,52 +36,52 @@ color: #00f;
 .hljs-template-variable,
 .hljs-type,
 .hljs-addition {
-color: #a31515;
+    color: #a31515;
 }
 
 .hljs-deletion,
 .hljs-selector-attr,
 .hljs-selector-pseudo,
 .hljs-meta {
-color: #2b91af;
+    color: #2b91af;
 }
 
 .hljs-doctag {
-color: #808080;
+    color: #808080;
 }
 
 .hljs-attr {
-color: #f00;
+    color: #f00;
 }
 
 .hljs-symbol,
 .hljs-bullet,
 .hljs-link {
-color: #00b0e8;
+    color: #00b0e8;
 }
 
 
 .hljs-emphasis {
-font-style: italic;
+    font-style: italic;
 }
 
 .hljs-strong {
-font-weight: bold;
+    font-weight: bold;
 }
 
 .documentation-link {
-text-decoration: none !important; 
-padding: 6px 0; 
-display: flex; 
-align-items: center; 
-position: relative; 
-float: right; 
-margin-left: -100%;
+    text-decoration: none !important;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+    float: right;
+    margin-left: -100%;
 }
 
 .social-link {
-margin-right: 8px;
-text-decoration: none;
+    margin-right: 8px;
+    text-decoration: none;
 }
 
 .console-content {
@@ -91,7 +91,7 @@ text-decoration: none;
 
 .console-header {
     display: flex;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     padding: 0 0 16px 0;
 }
 
@@ -106,7 +106,7 @@ text-decoration: none;
     display: flex;
     align-items: baseline;
     color: #000000;
-    background: rgba(210,233,255,0.8);
+    background: rgba(210, 233, 255, 0.8);
     border-radius: 4px;
 }
 
@@ -178,6 +178,7 @@ body {
 .next .dark p {
     color: #ffffff;
 }
+
 .next h1 {
     font-weight: bold;
     font-size: 72px;
@@ -256,7 +257,7 @@ body {
 }
 
 .dark .cta-button {
-    border-color: rgba(255,255,255,.3);
+    border-color: rgba(255, 255, 255, .3);
     color: #ffffff !important;
 }
 
@@ -273,6 +274,7 @@ body {
     border-color: #050A23;
     background: #050A23;
 }
+
 .dark .cta-button:hover {
     text-decoration: none;
     color: #050A23 !important;
@@ -283,6 +285,7 @@ body {
 .cta-button:active {
     color: #c2c2c2 !important;
 }
+
 .dark .cta-button:active {
     color: #515256 !important;
 }
@@ -327,7 +330,7 @@ body {
 
 video {
     box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.5);
-    background: rgba(0,0,0,.3) url("../images/play.svg") no-repeat 50% 50%;
+    background: rgba(0, 0, 0, .3) url("../images/play.svg") no-repeat 50% 50%;
 }
 
 .radzen-features ul {
@@ -396,7 +399,7 @@ video {
 
 .all-components a:hover {
     color: #0E44CC;
-    border-bottom-color: #0E44CC; 
+    border-bottom-color: #0E44CC;
 }
 
 /* Footer */
@@ -406,6 +409,7 @@ video {
     opacity: .2;
     transition: all 0.4s ease-in-out;
 }
+
 .copyright p {
     font-size: 1rem;
     font-weight: 300;
@@ -429,7 +433,7 @@ pre {
     padding: 0 0.5rem;
     font-size: 0.8125em !important;
     line-height: 1.5rem;
-    background:rgba(0,0,0,.08);
+    background: rgba(0, 0, 0, .08);
     border-radius: 0.25rem;
 }
 
@@ -461,6 +465,7 @@ pre {
     line-height: 2.5rem;
     letter-spacing: -0.02em;
 }
+
 .rz-card.docu p,
 .rz-card.docu ul {
     font-size: 18px;
@@ -487,8 +492,8 @@ img.illustration {
 
 @media (max-width: 1024px) {
     .documentation-link {
-        padding: 0; 
-        float: none; 
+        padding: 0;
+        float: none;
         margin-left: 0;
         margin-bottom: 1rem;
     }
@@ -504,21 +509,26 @@ img.illustration {
     .next h1 {
         font-size: 3.5rem;
     }
+
     .all-components h4 {
         font-size: 1.25rem;
         font-weight: 700;
     }
+
     .all-components a {
         font-size: 1.25rem;
         font-weight: 400;
     }
+
     .popular-components a {
         width: 7rem;
         margin-bottom: 2rem;
     }
+
     .customers h3 {
         margin: 1rem 0 0;
     }
+
     .copyright {
         opacity: 1;
     }

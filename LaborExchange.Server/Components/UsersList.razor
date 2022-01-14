@@ -10,23 +10,23 @@
     <th>Пароль</th>
     </thead>
     <tbody>
-        @foreach (var user in Users)
-        {
-             //3)
-            <tr @onclick=@(() => ClickRow(user.UserId)) class="@(user.UserId == Current ? "table-primary" : null)">
+    @foreach (var user in Users)
+    {
+        //3)
+        <tr @onclick=@(() => ClickRow(user.UserId)) class="@(user.UserId == Current ? "table-primary" : null)">
 
-                <td>@user.UserId</td>
-                <td>
-                    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-                                    SelectedItem="@user.UserType.ToString()"
-                                    Placeholder="@user.UserType.ToString()"
-                                    Data=@Enum.GetNames(typeof(UserType))
-                                    Change="@DropDownChanged"/>
-                </td>
-                <td>@user.Login</td>
-                <td>@user.Password</td>
-            </tr>
-        }
+            <td>@user.UserId</td>
+            <td>
+                <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                                SelectedItem="@user.UserType.ToString()"
+                                Placeholder="@user.UserType.ToString()"
+                                Data=@Enum.GetNames(typeof(UserType))
+                                Change="@DropDownChanged"/>
+            </td>
+            <td>@user.Login</td>
+            <td>@user.Password</td>
+        </tr>
+    }
     </tbody>
 </table>
 

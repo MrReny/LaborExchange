@@ -3,7 +3,7 @@
 namespace LaborExchange.Commons
 {
 
-    public enum UserType
+    public enum UserType : int
     {
         Administrator,
         Employee,

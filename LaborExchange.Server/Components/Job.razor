@@ -2,8 +2,6 @@
 @using LaborExchange.Server.DBModel
 @using Microsoft.AspNetCore.Http
 @using Microsoft.EntityFrameworkCore
-@using System.Security.Claims
-@using Microsoft.AspNetCore.Authorization
 
 @inject LaborExchangeDbContext _dbContext
 
@@ -11,48 +9,46 @@
 @inject NavigationManager _navigationManager
 
 
-        <RadzenCard class="m-3">
-            <h3 class="h5">Вакансия</h3>
-            <div class="d-flex flex-row">
-                <div>
-                    <div>Работодатель</div>
-                    <b>@(_job.EMPLOYER.LEGAL_NAME)</b>
-                    @*TODO Представление работодателя*@
-                </div>
-            </div>
-        </RadzenCard>
-        <RadzenCard class="m-3">
-            <h3 class="h5">Информация о вакансии</h3>
-            <div class="flex">
-                <div class="col-md-4">
-                    <div>Зарплата</div>
-                    <b>@(_job.PAYMENT)</b>
-                    <div class="mt-3">Должность</div>
-                    <b>@(_job.VACANCY_NAME)</b>
-                </div>
-                <div class="col-md-8">
-                    <div>Требуемое образование</div>
-                    <b>@(_job.EducationString)</b>
-                    <div class="mt-3">Требуемый опыт работы</div>
-                    <b>@(_job.EXPERIENCE)</b>
-                </div>
-            </div>
-        </RadzenCard>
+<RadzenCard class="m-3">
+    <h3 class="h5">Вакансия</h3>
+    <div class="d-flex flex-row">
+        <div>
+            <div>Работодатель</div>
+            <b>@(_job.EMPLOYER.LEGAL_NAME)</b>
+            @*TODO Представление работодателя*@
+        </div>
+    </div>
+</RadzenCard>
+<RadzenCard class="m-3">
+    <h3 class="h5">Информация о вакансии</h3>
+    <div class="flex">
+        <div class="col-md-4">
+            <div>Зарплата</div>
+            <b>@(_job.PAYMENT)</b>
+            <div class="mt-3">Должность</div>
+            <b>@(_job.VACANCY_NAME)</b>
+        </div>
+        <div class="col-md-8">
+            <div>Требуемое образование</div>
+            <b>@(_job.EducationString)</b>
+            <div class="mt-3">Требуемый опыт работы</div>
+            <b>@(_job.EXPERIENCE)</b>
+        </div>
+    </div>
+</RadzenCard>
 
 @code
 {
     [Parameter]
     public int? JobId { get; set; }
 
-    private ClaimsPrincipal _user;
+    private USER _user;
 
     private JOB_VACANCY _job;
 
     protected override async Task OnInitializedAsync()
     {
         if (_httpContextAccessor?.HttpContext?.Request == null) return;
-
-        _user = _httpContextAccessor.HttpContext.User;
         Console.WriteLine(_httpContextAccessor.HttpContext.User.Identity);
 
 

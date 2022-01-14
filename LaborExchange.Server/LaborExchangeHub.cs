@@ -7,7 +7,7 @@ using MagicOnion.Server.Hubs;
 namespace LaborExchange.Server
 {
     [GroupConfiguration(typeof(ConcurrentDictionaryGroupRepositoryFactory))]
-    public class LaborExchangeHub: StreamingHubBase<ILaborExchangeHub, ILaborExchangeHubReciever>, ILaborExchangeHub
+    public class LaborExchangeHub : StreamingHubBase<ILaborExchangeHub, ILaborExchangeHubReciever>, ILaborExchangeHub
     {
         private IGroup _group;
         private IInMemoryStorage<User> Users => _group.GetInMemoryStorage<User>();
@@ -31,7 +31,6 @@ namespace LaborExchange.Server
             _loggedUsers.TryAdd(ConnectionId, user);
             _group.GetInMemoryStorage<User>().Set(ConnectionId, user);
             return user;
-
         }
 
         public async Task<bool> Logout()
@@ -46,7 +45,7 @@ namespace LaborExchange.Server
         public async Task<Employee[]> GetEmployees()
         {
             var user = Users?.Get(ConnectionId);
-            if (user is not {UserType: UserType.Employer}) return Array.Empty<Employee>();
+            if (user is not { UserType: UserType.Employer }) return Array.Empty<Employee>();
 
             return await _dbConnector.GetEmployees();
         }
@@ -77,7 +76,7 @@ namespace LaborExchange.Server
 
         public Task<bool> ReturnOffer(JobOffer offer)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,59 +1,17 @@
 ﻿@page "/employees"
 @using LaborExchange.Server.DBModel
-@using Microsoft.AspNetCore.Http
 @using Microsoft.EntityFrameworkCore
-@using System.Security.Claims
+@using LaborExchange.Server.Services
+@using LaborExchange.Commons
 @inject NavigationManager NavigationManager
-
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IUserManager UserManager
 
 @inherits LaborExchange.Server.ViewModels.QueryableViewModel<EMPLOYEE>
 
 <h3>Работники</h3>
-<h3>ClaimsPrincipal Data</h3>
-
-<button @onclick="GetClaimsPrincipalData">Get ClaimsPrincipal Data</button>
-
-<p>@_authMessage</p>
-
-@if (_claims.Count() > 0)
-{
-    <ul>
-        @foreach (var claim in _claims)
-        {
-            <li>@claim.Type: @claim.Value</li>
-        }
-    </ul>
-}
-
-<p>@_surnameMessage</p>
-
-@code {
-    private string _authMessage;
-    private string _surnameMessage;
-    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
-
-    private async Task GetClaimsPrincipalData()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            _authMessage = $"{user.Identity.Name} is authenticated.";
-            _claims = user.Claims;
-            _surnameMessage =
-                $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
-        }
-        else
-        {
-            _authMessage = "The user is NOT authenticated.";
-        }
-    }
-}
 
 @*TODO Больше генериков богу генериков, я тут DRYем просто пол вытер - переделать*@
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить резюме" Click="@InsertRow" Disabled=@(ItemToInsert != null)/>
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить резюме" Click="@InsertRow" Disabled="@(ItemToInsert != null)"/>
 <RadzenDataGrid @ref="ItemsGrid" AllowFiltering="true" AllowColumnResize="true"
                 FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" AllowSorting="true"
                 Data="@Items" TItem="EMPLOYEE" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
@@ -91,7 +49,8 @@
         </RadzenDataGridColumn>
 
         @*TODO только для админа*@
-        <RadzenDataGridColumn TItem="EMPLOYEE" Title="Edit" Width="140px">
+        <RadzenDataGridColumn TItem="EMPLOYEE" Title="Edit" Width="140px"
+                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
             <Template Context="employee">
                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Class="m-1"
                               Click="@(_ => EditRow(employee))" @onclick:stopPropagation="true"/>
@@ -108,7 +67,8 @@
         </RadzenDataGridColumn>
 
         @*TODO только для админа*@
-        <RadzenDataGridColumn TItem="EMPLOYEE" Context="employee" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+        <RadzenDataGridColumn TItem="EMPLOYEE" Context="employee" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px"
+                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
             <Template Context="employee">
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(employee))" @onclick:stopPropagation="true">
                 </RadzenButton>
@@ -124,6 +84,11 @@
 
 @code{
 
+    #region auth
+
+    private USER _user;
+
+    #endregion
 
     #region Override
 
@@ -133,8 +98,8 @@
         {
             if (ViewHttpContextAccessor?.HttpContext?.Request == null) return;
 
-            //CurrentContext = ViewHttpContextAccessor.HttpContext;
-            Console.WriteLine(ViewHttpContextAccessor.HttpContext.User.Identity);
+            _user = UserManager.GetCurrentUser(ViewHttpContextAccessor.HttpContext);
+
             Items = LocalDbContext.EMPLOYEES.Include("PASSPORT").ToList();
             await base.OnInitializedAsync();
         }
@@ -142,7 +107,6 @@
         {
             Console.WriteLine(e);
         }
-
     }
 
     public new async Task InsertRow()
@@ -151,20 +115,22 @@
         {
             var now = DateTime.UtcNow.Millisecond;
             var rnd = new Random(now.GetHashCode() + now);
-            ItemToInsert = new EMPLOYEE{PASSPORT = new PASSPORT()
+            ItemToInsert = new EMPLOYEE
             {
-                PASSPORT_SERIE = rnd.Next(9999),
-                PASSPORT_NUMBER = rnd.Next(999999),
-                PASSPORT_DATE_OF_ISSUE = new DateTime().AddMilliseconds(rnd.Next()),
-                PASSPORT_PLACE_OF_ISSUE = new DateTime().AddMilliseconds(rnd.Next()).GetHashCode().ToString() // TODO просто что-бы пройти нотнулл
-            }};
+                PASSPORT = new PASSPORT()
+                {
+                    PASSPORT_SERIE = rnd.Next(9999),
+                    PASSPORT_NUMBER = rnd.Next(999999),
+                    PASSPORT_DATE_OF_ISSUE = new DateTime().AddMilliseconds(rnd.Next()),
+                    PASSPORT_PLACE_OF_ISSUE = new DateTime().AddMilliseconds(rnd.Next()).GetHashCode().ToString() // TODO просто что-бы пройти нотнулл
+                }
+            };
             await ItemsGrid.InsertRow(ItemToInsert);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
-
     }
 
     #endregion

@@ -5,12 +5,10 @@ namespace LaborExchange.Server
 {
     public class LaborExchangeDbContext : DbContext
     {
-
         public LaborExchangeDbContext(DbContextOptions
             <LaborExchangeDbContext> options)
-            :base(options)
+            : base(options)
         {
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -22,7 +20,6 @@ namespace LaborExchange.Server
         {
             base.OnModelCreating(modelBuilder);
         }
-
 
 
         public virtual DbSet<EMPLOYEE> EMPLOYEES { get; set; }

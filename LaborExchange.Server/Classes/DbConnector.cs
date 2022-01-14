@@ -18,18 +18,18 @@ namespace LaborExchange.Server
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         //TODO НОЛЬ БЕЗОПАСНОСТИ
-        private LaborExchangeDbContext _dbContext=> new LaborExchangeDbContext(
+        private LaborExchangeDbContext _dbContext => new(
             new DbContextOptionsBuilder<LaborExchangeDbContext>()
                 .UseFirebird(new FbConnection("ServerType=0;User=SYSDBA;" +
                                               "Password=masterkey;" +
                                               "DataSource=localhost;" +
                                               "Database=C:/Programming/DB/LABOREXCHANGE.FDB")).Options);
+
         private static DbConnector _instance;
         public static DbConnector Instance => _instance ??= new DbConnector();
 
         public DbConnector()
         {
-
         }
 
         public DbConnector Init()
@@ -42,6 +42,7 @@ namespace LaborExchange.Server
             try
             {
                 using (_dbContext)
+                {
                     return _dbContext.USERS
                         .Include(u => u.Employee)
                         .ThenInclude(e => e.PASSPORT)
@@ -56,8 +57,9 @@ namespace LaborExchange.Server
                                     Password = u.PASSWORD,
                                     Email = u.EMAIL,
                                     UserId = u.ID,
-                                    UserType = (UserType) u.USER_TYPE
+                                    UserType = (UserType)u.USER_TYPE
                                 }).FirstOrDefault();
+                }
             }
             catch (Exception e)
             {
@@ -71,6 +73,7 @@ namespace LaborExchange.Server
             try
             {
                 using (_dbContext)
+                {
                     return _dbContext.USERS
                         .Include(u => u.Employee)
                         .ThenInclude(e => e.PASSPORT)
@@ -83,8 +86,9 @@ namespace LaborExchange.Server
                                 Password = u.PASSWORD,
                                 Email = u.EMAIL,
                                 UserId = u.ID,
-                                UserType = (UserType) u.USER_TYPE
+                                UserType = (UserType)u.USER_TYPE
                             }).ToList();
+                }
             }
             catch (Exception e)
             {
@@ -122,10 +126,12 @@ namespace LaborExchange.Server
             try
             {
                 await using (_dbContext)
+                {
                     return _dbContext.EMPLOYEES
                         .Include(e => e.PASSPORT)
                         .Select(e => e.ToTransportType())
                         .ToArray();
+                }
             }
             catch (Exception e)
             {
@@ -139,7 +145,9 @@ namespace LaborExchange.Server
             try
             {
                 await using (_dbContext)
+                {
                     _dbContext.EMPLOYEES.Add(EMPLOYEE.FromTransportType(employee));
+                }
             }
             catch (Exception e)
             {
@@ -156,7 +164,9 @@ namespace LaborExchange.Server
             {
                 var e = EMPLOYER.FromTransportType(employer);
                 await using (_dbContext)
+                {
                     _dbContext.EMPLOYERS.Add(e);
+                }
             }
             catch (Exception e)
             {
@@ -169,11 +179,13 @@ namespace LaborExchange.Server
             try
             {
                 await using (_dbContext)
+                {
                     return _dbContext.JOB_VACANCIES
                         .Include(j => j.EMPLOYER)
                         .Where(j => j.SATISFIED == 0)
                         .Select(j => j.ToTransportType())
                         .ToArray();
+                }
             }
             catch (Exception e)
             {
@@ -187,7 +199,9 @@ namespace LaborExchange.Server
             try
             {
                 await using (_dbContext)
+                {
                     _dbContext.Add(JOB_VACANCY.FromTransportType(job));
+                }
             }
             catch (Exception e)
             {
@@ -219,7 +233,6 @@ namespace LaborExchange.Server
                         .Select(j => j.ToTransportType())
                         .ToArray();
                 }
-
             }
             catch (Exception e)
             {
@@ -257,6 +270,7 @@ namespace LaborExchange.Server
                 {
                     _dbContext.JOB_OFFERS.Update(JOB_OFFER.FromTransportType(offer));
                 }
+
                 return true;
             }
             catch (Exception e)

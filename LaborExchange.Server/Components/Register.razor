@@ -1,0 +1,94 @@
+﻿@page "/register"
+@using LaborExchange.Commons
+@using LaborExchange.Server.Services
+@using Microsoft.AspNetCore.Http
+
+@inject IUserManager UserManager
+@inject IHttpContextAccessor ViewHttpContextAccessor
+@inject NavigationManager NavigationManager
+<h3>Register</h3>
+<RadzenCard>
+    <RadzenCard>
+        <h4 class="mb-4">Login</h4>
+        <RadzenTextBox Placeholder="Enter login..." Change=@(args => OnChange(args, "Login")) Class="w-100"/>
+    </RadzenCard>
+
+    <RadzenCard>
+        <h4 class="mb-4">Password</h4>
+        <RadzenPassword Placeholder="Enter password..." Change=@(args => OnChange(args, "Password")) Class="w-100" />
+    </RadzenCard>
+
+    <RadzenCard>
+        <h4 class="mb-4">Type</h4>
+        <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                        Placeholder="@UserTypes[1]"
+                        Data=@(UserTypes)
+                        Change=@(args => OnChange(args, "DropDown")) />
+    </RadzenCard>
+    <RadzenButton Click=@(args => OnRegisterClick()) Text="Register" ButtonStyle="ButtonStyle.Primary" />
+
+</RadzenCard>
+
+@code {
+
+    public string[] UserTypes = Enum.GetNames(typeof(UserType));
+
+    private string _userName;
+    private string _password;
+    private UserType _userType;
+
+    private void OnChange(string args, string element)
+    {
+        try
+        {
+            switch (element)
+            {
+                case "Login":
+                    _userName = args;
+                    break;
+                case "Password":
+                    _password = args;
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+    }
+
+    private void OnChange(object args, string element)
+    {
+        try
+        {
+
+            switch (element)
+            {
+                case "Login":
+                    _userName = args.ToString();
+                    break;
+                case "Password":
+                    _password = args.ToString();
+                    break;
+                case "DropDown":
+                    _userType = Enum.Parse<UserType>(args.ToString());
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private void OnRegisterClick()
+    {
+        var result = UserManager.SignUp((int)_userType, _userName, _password);
+
+        UserManager.SignIn(ViewHttpContextAccessor.HttpContext, result.User);
+        NavigationManager.NavigateTo("/jobs");
+    }
+
+}

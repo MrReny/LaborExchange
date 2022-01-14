@@ -9,15 +9,13 @@ using Radzen.Blazor;
 
 namespace LaborExchange.Server.ViewModels
 {
-    public class QueryableViewModel<T> : ComponentBase where T : class, new ()
+    public class QueryableViewModel<T> : ComponentBase where T : class, new()
     {
         //TODO inject logger
 
-        [Inject]
-        public LaborExchangeDbContext LocalDbContext { get; set; }
+        [Inject] public LaborExchangeDbContext LocalDbContext { get; set; }
 
-        [Inject]
-        public IHttpContextAccessor ViewHttpContextAccessor { get; set; }
+        [Inject] public IHttpContextAccessor ViewHttpContextAccessor { get; set; }
 
         public RadzenDataGrid<T> ItemsGrid;
 
@@ -38,17 +36,13 @@ namespace LaborExchange.Server.ViewModels
             {
                 Console.WriteLine(e);
             }
-
         }
 
         public void OnUpdateRow(T item)
         {
             try
             {
-                if (item == ItemToInsert)
-                {
-                    ItemToInsert = null;
-                }
+                if (item == ItemToInsert) ItemToInsert = null;
 
                 LocalDbContext.Update(item);
                 LocalDbContext.SaveChanges();
@@ -63,10 +57,7 @@ namespace LaborExchange.Server.ViewModels
         {
             try
             {
-                if (item == ItemToInsert)
-                {
-                    ItemToInsert = null;
-                }
+                if (item == ItemToInsert) ItemToInsert = null;
 
                 await ItemsGrid.UpdateRow(item);
             }
@@ -74,17 +65,13 @@ namespace LaborExchange.Server.ViewModels
             {
                 Console.WriteLine(e);
             }
-
         }
 
         public void CancelEdit(T item)
         {
             try
             {
-                if (item == ItemToInsert)
-                {
-                    ItemToInsert = null;
-                }
+                if (item == ItemToInsert) ItemToInsert = null;
 
                 ItemsGrid.CancelEditRow(item);
 
@@ -105,10 +92,7 @@ namespace LaborExchange.Server.ViewModels
         {
             try
             {
-                if (item == ItemToInsert)
-                {
-                    ItemToInsert = null;
-                }
+                if (item == ItemToInsert) ItemToInsert = null;
 
                 if (Items.Contains(item))
                 {
@@ -148,7 +132,6 @@ namespace LaborExchange.Server.ViewModels
         {
             try
             {
-
                 LocalDbContext.Add(item);
 
                 LocalDbContext.SaveChanges();
