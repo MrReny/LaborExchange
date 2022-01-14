@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 using LaborExchange.Commons;
-using Xceed.Wpf.Toolkit;
 
 namespace LaborExchange.Client.Helpers
 {

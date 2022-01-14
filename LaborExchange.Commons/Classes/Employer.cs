@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using MessagePack;
+﻿using MessagePack;
 
 namespace LaborExchange.Commons
 {

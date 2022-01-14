@@ -7,7 +7,6 @@ using LaborExchange.Client.Services;
 using LaborExchange.Commons;
 using NLog;
 using Splat;
-using ToastNotifications.Messages;
 
 namespace LaborExchange.Client
 {

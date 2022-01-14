@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LaborExchange.Client.Services
+﻿namespace LaborExchange.Client.Services
 {
     /// <summary>
     /// Интерфес сервиса уведомлений

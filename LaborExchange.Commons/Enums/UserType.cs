@@ -1,6 +1,4 @@
-﻿using MessagePack;
-
-namespace LaborExchange.Commons
+﻿namespace LaborExchange.Commons
 {
 
     public enum UserType : int

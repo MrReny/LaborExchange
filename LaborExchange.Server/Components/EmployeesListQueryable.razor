@@ -11,7 +11,8 @@
 <h3>Работники</h3>
 
 @*TODO Больше генериков богу генериков, я тут DRYем просто пол вытер - переделать*@
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить резюме" Click="@InsertRow" Disabled="@(ItemToInsert != null)"/>
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить резюме" Click="@InsertRow" Disabled="@(ItemToInsert != null)"
+              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString() && c.Type == UserType.Employee.ToString())"/>
 <RadzenDataGrid @ref="ItemsGrid" AllowFiltering="true" AllowColumnResize="true"
                 FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" AllowSorting="true"
                 Data="@Items" TItem="EMPLOYEE" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
@@ -50,7 +51,7 @@
 
         @*TODO только для админа*@
         <RadzenDataGridColumn TItem="EMPLOYEE" Title="Edit" Width="140px"
-                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
+                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString() && c.Type == UserType.Employee.ToString())">
             <Template Context="employee">
                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Class="m-1"
                               Click="@(_ => EditRow(employee))" @onclick:stopPropagation="true"/>
@@ -68,7 +69,7 @@
 
         @*TODO только для админа*@
         <RadzenDataGridColumn TItem="EMPLOYEE" Context="employee" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px"
-                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
+                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString() && c.Type == UserType.Employee.ToString())">
             <Template Context="employee">
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(employee))" @onclick:stopPropagation="true">
                 </RadzenButton>
