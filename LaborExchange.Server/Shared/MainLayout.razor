@@ -4,7 +4,7 @@
 @inherits LayoutComponentBase
 @inject IHttpContextAccessor _httpContextAccessor
 @inject NavigationManager _navigationManager
-@inject IUserManager UserManager;
+@inject IUserManager _userManager;
 
 <RadzenContextMenu/>
  @*Visible="@(IsLoggedIn && User.USER_TYPE is (int)UserType.Administrator or (int)UserType.Employer)"*@
@@ -24,7 +24,8 @@
                     </Template>
 
                     <ChildContent>
-                        <RadzenProfileMenuItem Text="LogIn" Path="LogIn" Icon="account_circle" Visible="@(!IsLoggedIn)"/>
+                        <RadzenProfileMenuItem Text="LogIn" Path="LogIn" Icon="account_circle"/>
+                        <RadzenProfileMenuItem Text="LogOut" Path="Logout" Icon="account_circle"/>
                     </ChildContent>
                 </RadzenProfileMenu>
             </div>
@@ -51,7 +52,7 @@
     {
         if (_httpContextAccessor?.HttpContext?.Request == null) return;
 
-        User = UserManager.GetCurrentUser(CurrentContext);
+        User = _userManager.GetCurrentUser(CurrentContext);
 
         CurrentContext = _httpContextAccessor.HttpContext;
         Console.WriteLine(_httpContextAccessor.HttpContext.User.Identity?.Name);

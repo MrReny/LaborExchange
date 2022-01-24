@@ -4,6 +4,7 @@
         <TargetFramework>net5.0</TargetFramework>
         <AssemblyName>LaborExchange.Server</AssemblyName>
         <RootNamespace>LaborExchange.Server</RootNamespace>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

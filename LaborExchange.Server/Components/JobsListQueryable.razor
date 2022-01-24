@@ -2,12 +2,12 @@
 @page "/jobs"
 @page "/jobs/{EmployerId}"
 @using LaborExchange.Server.DBModel
-@using Microsoft.EntityFrameworkCore
 @using LaborExchange.Commons
 @using LaborExchange.Server.Services
-@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+@inject NavigationManager _navigationManager
 
-@inject IUserManager UserManager
+@inject IUserManager _userManager
 
 @inherits LaborExchange.Server.ViewModels.QueryableViewModel<JOB_VACANCY>
 <h3>Вакансии</h3>
@@ -52,7 +52,7 @@
 
 
         <RadzenDataGridColumn TItem="JOB_VACANCY" Title="Edit" Width="140px"
-                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
+                              Visible="@_userManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
             <Template Context="job">
                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Class="m-1"
                               Click="@(_ => EditRow(job))" @onclick:stopPropagation="true"/>
@@ -69,7 +69,7 @@
         </RadzenDataGridColumn>
 
         <RadzenDataGridColumn TItem="JOB_VACANCY" Context="job" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px"
-                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
+                              Visible="@_userManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString())">
             <Template Context="job">
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(job))" @onclick:stopPropagation="true">
                 </RadzenButton>
@@ -101,7 +101,7 @@
         {
             if (ViewHttpContextAccessor?.HttpContext?.Request == null) return;
 
-            _user = UserManager.GetCurrentUser(ViewHttpContextAccessor.HttpContext);
+            _user = _userManager.GetCurrentUser(ViewHttpContextAccessor.HttpContext);
 
             if (EmployerId != null)
                 Items = LocalDbContext.JOB_VACANCIES.Include("EMPLOYER")
@@ -124,7 +124,7 @@
     {
         try
         {
-            ItemToInsert = new JOB_VACANCY();
+            ItemToInsert = new JOB_VACANCY(new EMPLOYER());
             await ItemsGrid.InsertRow(ItemToInsert);
         }
         catch (Exception e)
@@ -139,7 +139,7 @@
 
     void OpenJobPage(DataGridRowMouseEventArgs<JOB_VACANCY> row)
     {
-        NavigationManager.NavigateTo($"job/{row.Data.ID}");
+        _navigationManager.NavigateTo($"job/{row.Data.ID}");
     }
 
     #endregion

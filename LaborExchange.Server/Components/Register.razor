@@ -3,9 +3,9 @@
 @using LaborExchange.Server.Services
 @using Microsoft.AspNetCore.Http
 
-@inject IUserManager UserManager
-@inject IHttpContextAccessor ViewHttpContextAccessor
-@inject NavigationManager NavigationManager
+@inject IUserManager _userManager
+@inject IHttpContextAccessor _viewHttpContextAccessor
+@inject NavigationManager _navigationManager
 <h3>Register</h3>
 <RadzenCard>
     <RadzenCard>
@@ -85,10 +85,10 @@
 
     private void OnRegisterClick()
     {
-        var result = UserManager.SignUp((int)_userType, _userName, _password);
+        var result = _userManager.SignUp((int)_userType, _userName, _password);
 
-        UserManager.SignIn(ViewHttpContextAccessor.HttpContext, result.User);
-        NavigationManager.NavigateTo("/jobs");
+        _userManager.SignIn(_viewHttpContextAccessor.HttpContext, result.User);
+        _navigationManager.NavigateTo("/jobs");
     }
 
 }

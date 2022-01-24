@@ -1,9 +1,9 @@
 ﻿@page "/login"
 @using LaborExchange.Server.Services
 @using Microsoft.AspNetCore.Http
-@inject IUserManager UserManager
-@inject IHttpContextAccessor ViewHttpContextAccessor
-@inject NavigationManager NavigationManager
+@inject IUserManager _userManager
+@inject IHttpContextAccessor _viewHttpContextAccessor
+@inject NavigationManager _navigationManager
 
 <h3>Login</h3>
 <div style="display: inline-flex; justify-content: center; width: 100%">
@@ -26,14 +26,14 @@
 
     void OnLogin(LoginArgs args)
     {
-        var result = UserManager.Validate(args.Username, args.Password);
-        UserManager.SignIn(ViewHttpContextAccessor.HttpContext, result.User);
-        NavigationManager.NavigateTo("/jobs");
+        var result = _userManager.Validate(args.Username, args.Password);
+        _userManager.SignIn(_viewHttpContextAccessor.HttpContext, result.User);
+        _navigationManager.NavigateTo("/jobs");
     }
 
     void OnRegister()
     {
-        NavigationManager.NavigateTo("/register");
+        _navigationManager.NavigateTo("/register");
     }
 
 }

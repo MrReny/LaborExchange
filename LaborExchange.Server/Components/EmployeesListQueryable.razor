@@ -3,8 +3,9 @@
 @using Microsoft.EntityFrameworkCore
 @using LaborExchange.Server.Services
 @using LaborExchange.Commons
-@inject NavigationManager NavigationManager
-@inject IUserManager UserManager
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager _navigationManager
+@inject IUserManager _userManager
 
 @inherits LaborExchange.Server.ViewModels.QueryableViewModel<EMPLOYEE>
 
@@ -12,7 +13,7 @@
 
 @*TODO Больше генериков богу генериков, я тут DRYем просто пол вытер - переделать*@
 <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить резюме" Click="@InsertRow" Disabled="@(ItemToInsert != null)"
-              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString() && c.Type == UserType.Employee.ToString())"/>
+              Visible="@_userManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString() || c.Type == UserType.Employee.ToString())"/>
 <RadzenDataGrid @ref="ItemsGrid" AllowFiltering="true" AllowColumnResize="true"
                 FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" AllowSorting="true"
                 Data="@Items" TItem="EMPLOYEE" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
@@ -51,7 +52,7 @@
 
         @*TODO только для админа*@
         <RadzenDataGridColumn TItem="EMPLOYEE" Title="Edit" Width="140px"
-                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString() && c.Type == UserType.Employee.ToString())">
+                              Visible="@_userManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString() || c.Type == UserType.Employee.ToString())">
             <Template Context="employee">
                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Class="m-1"
                               Click="@(_ => EditRow(employee))" @onclick:stopPropagation="true"/>
@@ -69,7 +70,7 @@
 
         @*TODO только для админа*@
         <RadzenDataGridColumn TItem="EMPLOYEE" Context="employee" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px"
-                              Visible="@UserManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString() && c.Type == UserType.Employee.ToString())">
+                              Visible="@_userManager.GetUserClaims(_user).Any(c => c.Type == UserType.Administrator.ToString() || c.Type == UserType.Employee.ToString())">
             <Template Context="employee">
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(employee))" @onclick:stopPropagation="true">
                 </RadzenButton>
@@ -99,7 +100,7 @@
         {
             if (ViewHttpContextAccessor?.HttpContext?.Request == null) return;
 
-            _user = UserManager.GetCurrentUser(ViewHttpContextAccessor.HttpContext);
+            _user = _userManager.GetCurrentUser(ViewHttpContextAccessor.HttpContext);
 
             Items = LocalDbContext.EMPLOYEES.Include("PASSPORT").ToList();
             await base.OnInitializedAsync();
@@ -118,6 +119,7 @@
             var rnd = new Random(now.GetHashCode() + now);
             ItemToInsert = new EMPLOYEE
             {
+                USER = _user,
                 PASSPORT = new PASSPORT()
                 {
                     PASSPORT_SERIE = rnd.Next(9999),

@@ -1,0 +1,27 @@
+﻿@page "/logout"
+@using LaborExchange.Server.Services
+@using Microsoft.AspNetCore.Http
+
+@inject IUserManager _userManager
+@inject IHttpContextAccessor _viewHttpContextAccessor
+@inject NavigationManager _navigationManager
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (_viewHttpContextAccessor?.HttpContext?.Request == null) return;
+
+            await _userManager.SignOut(_viewHttpContextAccessor.HttpContext);
+
+            _navigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+}
