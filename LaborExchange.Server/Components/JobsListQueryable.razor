@@ -38,7 +38,7 @@
 
         <RadzenDataGridColumn TItem="JOB_VACANCY" Property="PAYMENT" Title="Зарплата" Width="140px">
             <EditTemplate Context="job">
-                <RadzenTextBox @bind-value="job.PAYMENT"/>
+                <RadzenNumeric TValue="int?" TItem="int?" @bind-value="job.PAYMENT"/>
             </EditTemplate>
         </RadzenDataGridColumn>
 
